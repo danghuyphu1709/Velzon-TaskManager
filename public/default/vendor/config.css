@@ -1,0 +1,4 @@
+.blurRed {
+    border-color: red !important; /* Đổi màu viền thành đỏ */
+    box-shadow: 0 0 5px red; /* Hiển thị shadow đỏ (tuỳ chọn) */
+}
