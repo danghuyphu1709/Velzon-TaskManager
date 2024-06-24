@@ -31,7 +31,7 @@
                             </button>
                             <ul class="dropdown-menu dropdown-menu-lg" aria-labelledby="dropdownMenuButton2" id="space_header">
                                 @foreach($spaces as $items)
-                                <li><a class="dropdown-item active" href="">{{ $items->space_name }}</a></li>
+                                <li><a class="dropdown-item active" href="{{ route('table.index',$items->code) }}">{{ $items->space_name }}</a></li>
                                 @endforeach
                             </ul>
                         </div>
@@ -419,7 +419,7 @@
                     <div class="dropdown ms-sm-3 header-item topbar-user">
                         <button type="button" class="btn" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span class="d-flex align-items-center">
-                            <img class="rounded-circle header-profile-user" src="assets/images/users/avatar-1.jpg" alt="Header Avatar">
+                            <img class="rounded-circle header-profile-user" src="{{ Auth::user()->avatar }}" alt="Header Avatar">
                             <span class="text-start ms-xl-2">
                                 <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">{{ Auth::user()->name }}</span>
                             </span>
