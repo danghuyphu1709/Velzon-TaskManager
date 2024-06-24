@@ -10,8 +10,15 @@ class Spaces extends Model
     use HasFactory;
 
     protected $table = 'spaces';
+
     protected $primaryKey = 'id';
 
     public $timestamps = true;
-    public $fillable = ['access_level_space_id','space_name','space_description','important','created_at','updated_at'];
+
+    public $fillable = ['code','access_level_space_id','space_name','space_description','important','created_at','updated_at'];
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'space_users', 'spaces_id', 'user_id');
+    }
 }

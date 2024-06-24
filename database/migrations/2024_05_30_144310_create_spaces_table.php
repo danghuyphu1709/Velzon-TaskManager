@@ -14,8 +14,9 @@ return new class extends Migration
         Schema::create('spaces', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(App\Models\AccessLevelSpace::class)->constrained();
+            $table->string('code',25)->index();
             $table->string('space_name',25);
-            $table->string('space_description',255);
+            $table->string('space_description',255)->nullable();
             $table->tinyInteger('important')->default(0);
             $table->timestamps();
         });

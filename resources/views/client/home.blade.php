@@ -906,10 +906,9 @@
             <!--end task-board-->
 
             @include('client.layouts.modal');
-            <!--end modal -->
 
         </div>
-        <!-- container-fluid -->
+
     </div>
 
 @endsection
@@ -918,6 +917,11 @@
         $(document).ready(function() {
             var modalCreate = $('#createboardModal');
             var create = modalCreate.find('#create');
+            var userId = $('meta[name="user_id"]').attr('content');
+            function resetInput(){
+                modalCreate.find('#name').val('')
+                modalCreate.find('#desc').val('');
+            }
             create.on('click',function (){
                 var url = $(this).data('url');
                 let name = modalCreate.find('#name');
@@ -934,6 +938,7 @@
                     access_level_space_id : security.val(),
                     space_name : name.val(),
                     space_description : desc.val(),
+                    user_id : userId
                 }
                 if(validator){
                     $.ajax({
@@ -944,7 +949,9 @@
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         },
                         success: function(response){
-                            console.log('Success:', response);
+                            $('#createboardModal').modal('hide');
+                            $('#space_header').
+                            resetInput()
                         },
                         error: function(error) {
                             console.log('Error:', error);
@@ -953,5 +960,9 @@
                 }
             })
         });
+
+        function newSpaceHeader(element){
+            let ui = ``
+        }
     </script>
 @endsection

@@ -21,6 +21,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'google_id',
+        'avatar',
     ];
 
     /**
@@ -42,4 +44,8 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+    public function spaces()
+    {
+        return $this->belongsToMany(Spaces::class, 'space_users', 'user_id', 'spaces_id');
+    }
 }

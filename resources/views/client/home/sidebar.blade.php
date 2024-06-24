@@ -50,10 +50,10 @@
                     <li class="menu-title"><span data-key="t-menu">Không gian làm việc</span></li>
                     @foreach($spaces as $items)
                     <li class="nav-item">
-                        <a class="nav-link menu-link" href="#sidebarDashboards" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
+                        <a class="nav-link menu-link" href="#sidebar{{ $items->id }}" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
                             <i class="ri-table-2"></i><span data-key="t-dashboards"> {{ $items->space_name }}</span>
                         </a>
-                        <div class="collapse menu-dropdown" id="sidebarDashboards">
+                        <div class="collapse menu-dropdown" id="sidebar{{$items->id}}">
                             <ul class="nav nav-sm flex-column">
                                 <li class="nav-item">
                                     <a href="#" class="nav-link" data-key="t-analytics"> Bảng </a>

@@ -1,6 +1,5 @@
 <!doctype html>
 <html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg" data-sidebar-image="none" data-preloader="disable">
-
 <head>
 
     <meta charset="utf-8" />
@@ -9,6 +8,7 @@
     <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
     <meta content="Themesbrand" name="author" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="user_id" content="{{ Auth::user()->id }}">
     <!-- App favicon -->
     <link rel="shortcut icon" href="{{ asset('default/assets/images/favicon.ico') }}">
 
