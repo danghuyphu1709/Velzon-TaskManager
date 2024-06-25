@@ -28,6 +28,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/home',[App\Http\Controllers\Client\HomeController::class,'index'])->name('home');
     Route::get('/table/{code}',[App\Http\Controllers\Client\TableController::class,'index'])->name('table.index');
+    Route::get('/space/{code}',[App\Http\Controllers\Client\SpaceController::class,'detail'])->name('space.show');
 });
 
 Route::get('auth/google', [LoginGoogleController::class, 'redirectToGoogle'])->name('auth.google');
