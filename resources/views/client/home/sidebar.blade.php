@@ -46,7 +46,7 @@
                 </ul>
 
                 <hr>
-                <ul class="navbar-nav mt-4" id="navbar-nav" id="space_sidebar">
+                <ul class="navbar-nav mt-4" id="space_sidebar">
                     <li class="menu-title"><span data-key="t-menu">Không gian làm việc</span></li>
                     @foreach($spaces as $items)
                     <li class="nav-item">
@@ -56,7 +56,7 @@
                         <div class="collapse menu-dropdown" id="sidebar{{$items->id}}">
                             <ul class="nav nav-sm flex-column">
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link" data-key="t-analytics"> Bảng </a>
+                                    <a href="{{ route('space.show',$items->code) }}" class="nav-link" data-key="t-analytics"> Bảng </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="#" class="nav-link" data-key="t-crm"> Thành viên </a>

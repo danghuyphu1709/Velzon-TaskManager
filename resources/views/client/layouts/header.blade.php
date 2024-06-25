@@ -57,7 +57,7 @@
                             </button>
                             <ul class="dropdown-menu dropdown-menu-lg" aria-labelledby="dropdownMenuButton2">
                                 <li><h5 class="dropdown-item" data-bs-toggle="modal"  data-bs-target="#createboardModal"><i class="ri-add-line align-bottom me-1"></i> Tạo không gian </h5></li>
-                                <li><h5 class="dropdown-item">Tạo bảng </h5></li>
+                                <li><h5 class="dropdown-item" data-bs-toggle="modal"  data-bs-target="#createTableModal"><i class="ri-add-line align-bottom me-1"></i> Tạo bảng </h5></li>
                             </ul>
                         </div>
                     </div>

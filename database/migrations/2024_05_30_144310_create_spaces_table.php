@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string('code',25)->index();
             $table->string('space_name',25);
             $table->string('space_description',255)->nullable();
-            $table->tinyInteger('important')->default(0);
             $table->timestamps();
         });
     }

@@ -19,3 +19,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::post('/space/create',[HomeController::class,'store'])->name('space.store');
+Route::post('/table/create',[HomeController::class,'storeTable'])->name('table.store');

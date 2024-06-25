@@ -107,6 +107,53 @@
 </div>
 <!--end add board modal-->
 
+<div class="modal fade" id="createTableModal" tabindex="-1" aria-labelledby="createTableModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0">
+            <div class="modal-header p-3 bg-info-subtle">
+                <h5 class="modal-title" id="createTableModalLabel">Tạo bảng</h5>
+                <button type="button" class="btn-close" id="addBoardBtn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <label for="boardName" class="form-label">Tên bảng</label>
+                        <input type="text" class="form-control name" placeholder="">
+                        <span class="text-danger" id="error_name"></span>
+                    </div>
+                    <div class="col-lg-12 mt-3">
+                        <label for="boardName" class="form-label">Không gian làm việc</label>
+                        <select class="form-control space" >
+                            @foreach($spaces as $items)
+                                <option value="{{ $items->id }}"> {{ $items->space_name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-lg-12 mt-3">
+                        <label for="boardName" class="form-label">Quyền xem</label>
+                        <select class="form-control security" >
+                            @foreach($accessLevelTable as $items)
+                                <option value="{{ $items->id }}"> {{ $items->access_name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-lg-12 mt-3">
+                        <label for="boardName" class="form-label">Mô tả</label>
+                        <label for="desc"></label><textarea class="form-control desc"></textarea>
+                    </div>
+                    <div class="mt-4">
+                        <div class="hstack gap-2 justify-content-end">
+                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Thoát</button>
+                            <button type="button" class="btn btn-success" id="create" data-url="{{ route('table.store') }}">Tạo</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--end add board modal-->
+
 <div class="modal fade" id="creatertaskModal" tabindex="-1" aria-labelledby="creatertaskModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content border-0">

@@ -14,4 +14,5 @@ class SpaceUser extends Model
     public $timestamps = false;
 
     public $fillable = ['spaces_id','user_id','role_space_id'];
+
 }

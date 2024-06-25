@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Client;
 use App\Http\Controllers\Controller;
 use App\Http\Repositories\Repository\SpaceRepository;
 use App\Models\AccessLevelSpace;
+use App\Models\AccessLevelTable;
 use App\Models\Spaces;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -21,6 +22,8 @@ class HomeController extends Controller
     {
          $accessLevel = AccessLevelSpace::query()->get();
          $spaces = User::find(Auth::user()->id)->Spaces()->get();
-         return view('client.home',compact(['accessLevel','spaces']));
+         $tables = User::find(Auth::user()->id)->spaces()->with('tables')->get();
+         $accessLevelTable = AccessLevelTable::query()->get();
+         return view('client.home',compact(['tables','accessLevel','spaces','accessLevelTable']));
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Events\Space;
+namespace App\Events\Tables;
 
 use App\Models\Spaces;
 use Illuminate\Broadcasting\Channel;

@@ -16,4 +16,8 @@ class AccessLevelSpace extends Model
     public $timestamps = false;
 
     public $fillable = ['access_name'];
+    public function space()
+    {
+        return $this->hasMany(Spaces::class);
+    }
 }
