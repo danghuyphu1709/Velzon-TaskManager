@@ -14,8 +14,6 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             AccessLevelSpaceSeeder::class,
-            AccessLevelTableSeeder::class,
-            RoleTableSeeder::class,
             RoleSpaceSeeder::class,
         ]);
     }

@@ -31,7 +31,7 @@
                             </button>
                             <ul class="dropdown-menu dropdown-menu-lg" aria-labelledby="dropdownMenuButton2" id="space_header">
                                 @foreach($spaces as $items)
-                                <li><a class="dropdown-item active" href="{{ route('table.index',$items->code) }}">{{ $items->space_name }}</a></li>
+                                <li><a class="dropdown-item active" href="{{ route('tables.index',$items->code) }}">{{ $items->space_name }}</a></li>
                                 @endforeach
                             </ul>
                         </div>
@@ -115,7 +115,7 @@
                                     <!-- item -->
                                     <a href="javascript:void(0);" class="dropdown-item notify-item py-2">
                                         <div class="d-flex">
-                                            <img src="assets/images/users/avatar-2.jpg" class="me-3 rounded-circle avatar-xs" alt="user-pic">
+                                            <img src=" {{ asset('default/assets/images/users/avatar-2.jpg')  }}" class="me-3 rounded-circle avatar-xs" alt="user-pic">
                                             <div class="flex-grow-1">
                                                 <h6 class="m-0">Angela Bernier</h6>
                                                 <span class="fs-11 mb-0 text-muted">Manager</span>
@@ -125,7 +125,7 @@
                                     <!-- item -->
                                     <a href="javascript:void(0);" class="dropdown-item notify-item py-2">
                                         <div class="d-flex">
-                                            <img src="assets/images/users/avatar-3.jpg" class="me-3 rounded-circle avatar-xs" alt="user-pic">
+                                            <img src=" {{ asset('default/assets/images/users/avatar-3.jpg')  }}" class="me-3 rounded-circle avatar-xs" alt="user-pic">
                                             <div class="flex-grow-1">
                                                 <h6 class="m-0">David Grasso</h6>
                                                 <span class="fs-11 mb-0 text-muted">Web Designer</span>
@@ -135,7 +135,7 @@
                                     <!-- item -->
                                     <a href="javascript:void(0);" class="dropdown-item notify-item py-2">
                                         <div class="d-flex">
-                                            <img src="assets/images/users/avatar-5.jpg" class="me-3 rounded-circle avatar-xs" alt="user-pic">
+                                            <img src=" {{ asset('default/assets/images/users/avatar-5.jpg')  }}" class="me-3 rounded-circle avatar-xs" alt="user-pic">
                                             <div class="flex-grow-1">
                                                 <h6 class="m-0">Mike Bunch</h6>
                                                 <span class="fs-11 mb-0 text-muted">React Developer</span>
@@ -225,7 +225,7 @@
 
                                         <div class="text-reset notification-item d-block dropdown-item position-relative">
                                             <div class="d-flex">
-                                                <img src="assets/images/users/avatar-2.jpg" class="me-3 rounded-circle avatar-xs flex-shrink-0" alt="user-pic">
+                                                <img src=" {{ asset('default/assets/images/users/avatar-2.jpg')  }}" class="me-3 rounded-circle avatar-xs flex-shrink-0" alt="user-pic">
                                                 <div class="flex-grow-1">
                                                     <a href="#!" class="stretched-link">
                                                         <h6 class="mt-0 mb-1 fs-13 fw-semibold">Angela Bernier</h6>
@@ -274,7 +274,7 @@
 
                                         <div class="text-reset notification-item d-block dropdown-item position-relative">
                                             <div class="d-flex">
-                                                <img src="assets/images/users/avatar-8.jpg" class="me-3 rounded-circle avatar-xs flex-shrink-0" alt="user-pic">
+                                                <img src=" {{ asset('default/assets/images/users/avatar-8.jpg')  }}" class="me-3 rounded-circle avatar-xs flex-shrink-0" alt="user-pic">
                                                 <div class="flex-grow-1">
                                                     <a href="#!" class="stretched-link">
                                                         <h6 class="mt-0 mb-1 fs-13 fw-semibold">Maureen Gibson</h6>
@@ -307,7 +307,7 @@
                                     <div data-simplebar style="max-height: 300px;" class="pe-2">
                                         <div class="text-reset notification-item d-block dropdown-item">
                                             <div class="d-flex">
-                                                <img src="assets/images/users/avatar-3.jpg" class="me-3 rounded-circle avatar-xs" alt="user-pic">
+                                                <img src=" {{ asset('default/assets/images/users/avatar-3.jpg')  }}" class="me-3 rounded-circle avatar-xs" alt="user-pic">
                                                 <div class="flex-grow-1">
                                                     <a href="#!" class="stretched-link">
                                                         <h6 class="mt-0 mb-1 fs-13 fw-semibold">James Lemire</h6>
@@ -330,7 +330,7 @@
 
                                         <div class="text-reset notification-item d-block dropdown-item">
                                             <div class="d-flex">
-                                                <img src="assets/images/users/avatar-2.jpg" class="me-3 rounded-circle avatar-xs" alt="user-pic">
+                                                <img src=" {{ asset('default/assets/images/users/avatar-2.jpg')  }}" class="me-3 rounded-circle avatar-xs" alt="user-pic">
                                                 <div class="flex-grow-1">
                                                     <a href="#!" class="stretched-link">
                                                         <h6 class="mt-0 mb-1 fs-13 fw-semibold">Angela Bernier</h6>
@@ -354,7 +354,7 @@
 
                                         <div class="text-reset notification-item d-block dropdown-item">
                                             <div class="d-flex">
-                                                <img src="assets/images/users/avatar-6.jpg" class="me-3 rounded-circle avatar-xs" alt="user-pic">
+                                                <img src=" {{ asset('default/assets/images/users/avatar-6.jpg')  }}" class="me-3 rounded-circle avatar-xs" alt="user-pic">
                                                 <div class="flex-grow-1">
                                                     <a href="#!" class="stretched-link">
                                                         <h6 class="mt-0 mb-1 fs-13 fw-semibold">Kenneth Brown</h6>
@@ -378,7 +378,7 @@
 
                                         <div class="text-reset notification-item d-block dropdown-item">
                                             <div class="d-flex">
-                                                <img src="assets/images/users/avatar-8.jpg" class="me-3 rounded-circle avatar-xs" alt="user-pic">
+                                                <img src=" {{ asset('default/assets/images/users/avatar-8.jpg')  }}" class="me-3 rounded-circle avatar-xs" alt="user-pic">
                                                 <div class="flex-grow-1">
                                                     <a href="#!" class="stretched-link">
                                                         <h6 class="mt-0 mb-1 fs-13 fw-semibold">Maureen Gibson</h6>

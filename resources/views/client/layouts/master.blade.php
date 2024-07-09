@@ -3,7 +3,7 @@
 <head>
 
     <meta charset="utf-8" />
-    <title>Task Manager</title>
+    <title>Velzon - TaskManage</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
     <meta content="Themesbrand" name="author" />
@@ -28,6 +28,7 @@
     <link href="{{ asset('default/assets/css/app.min.css') }}" rel="stylesheet" type="text/css" />
     <!-- custom Css-->
     <link href="{{ asset('default/assets/css/custom.min.css') }}" rel="stylesheet" type="text/css" />
+
     <link href="{{ asset('default/vendor/config.css') }}" rel="stylesheet" type="text/css" />
     @yield('css')
 </head>
@@ -48,8 +49,6 @@
 <script src=" {{ asset('default/assets/libs/simplebar/simplebar.min.js') }}"></script>
 <script src=" {{ asset('default/assets/libs/node-waves/waves.min.js') }}"></script>
 <script src=" {{ asset('default/assets/libs/feather-icons/feather.min.js') }}"></script>
-<script src=" {{ asset('default/assets/js/pages/plugins/lord-icon-2.1.0.js') }}"></script>
-<script src=" {{ asset('default/assets/js/plugins.js') }}"></script>
 
 <!-- apexcharts -->
 <script src=" {{ asset('default/assets/libs/apexcharts/apexcharts.min.js') }}"></script>
@@ -68,6 +67,8 @@
 <script src=" {{ asset('default/assets/js/app.js') }}"></script>
 
 <script src=" {{ asset('default/vendor/jquery/jquery.main.js')}}"></script>
+
+<script src=" {{ asset('default/vendor/main.js') }}"></script>
 
 @yield('js')
 </body>
