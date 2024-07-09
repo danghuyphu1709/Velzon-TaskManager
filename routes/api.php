@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\HomeController;
+use \App\Http\Controllers\Client\SpaceController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -17,6 +18,3 @@ use App\Http\Controllers\Api\HomeController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-
-Route::post('/space/create',[HomeController::class,'store'])->name('space.store');
-Route::post('/table/create',[HomeController::class,'storeTable'])->name('table.store');

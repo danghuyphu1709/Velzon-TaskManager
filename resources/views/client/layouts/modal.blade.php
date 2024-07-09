@@ -75,15 +75,18 @@
                 <button type="button" class="btn-close" id="addBoardBtn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+                <form action=" {{ route('spaces.store') }} " method="post" id="createboardForm">
+                    @csrf
                     <div class="row">
                         <div class="col-lg-12">
                             <label for="boardName" class="form-label">Tên không gian</label>
-                            <input type="text" class="form-control" id="name" placeholder="">
+                            <input type="text" class="form-control" id="name" placeholder="" name="space_name">
                             <span class="text-danger" id="error_name"></span>
                         </div>
                         <div class="col-lg-12 mt-3">
                             <label for="boardName" class="form-label ">Quyền xem</label>
-                            <select class="form-control" id="security" >
+                            <select class="form-control" id="security" name="access_level_space_id">
+                                <option value="0" id="defaultSecurity">Chọn quyền</option>
                                 @foreach($accessLevel as $items)
                                 <option value="{{ $items->id }}"> {{ $items->access_name }}</option>
                                 @endforeach
@@ -91,16 +94,17 @@
                         </div>
                         <div class="col-lg-12 mt-3">
                             <label for="boardName" class="form-label">Mô tả</label>
-                            <label for="desc"></label><textarea class="form-control" id="desc"></textarea>
+                            <label for="desc"></label><textarea class="form-control" id="desc" name="space_description"></textarea>
                         </div>
 
                         <div class="mt-4">
                             <div class="hstack gap-2 justify-content-end">
                                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">Thoát</button>
-                                <button type="button" class="btn btn-success" id="create" data-url="{{ route('space.store') }}">Tạo</button>
+                                <button type="submit" class="btn btn-success">Tạo</button>
                             </div>
                         </div>
                     </div>
+                </form>
             </div>
         </div>
     </div>
@@ -115,39 +119,35 @@
                 <button type="button" class="btn-close" id="addBoardBtn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+                <form action=" {{ route('tables.store') }} " method="post" id="createTableForm">
+                    @csrf
                 <div class="row">
                     <div class="col-lg-12">
                         <label for="boardName" class="form-label">Tên bảng</label>
-                        <input type="text" class="form-control name" placeholder="">
+                        <input type="text" class="form-control name" name="title">
                         <span class="text-danger" id="error_name"></span>
                     </div>
                     <div class="col-lg-12 mt-3">
                         <label for="boardName" class="form-label">Không gian làm việc</label>
-                        <select class="form-control space" >
+                        <select class="form-control space" name="spaces_id" id="space">
+                            <option value="0" id="defaultSpace">Chọn không gian</option>
                             @foreach($spaces as $items)
                                 <option value="{{ $items->id }}"> {{ $items->space_name}}</option>
                             @endforeach
                         </select>
                     </div>
                     <div class="col-lg-12 mt-3">
-                        <label for="boardName" class="form-label">Quyền xem</label>
-                        <select class="form-control security" >
-                            @foreach($accessLevelTable as $items)
-                                <option value="{{ $items->id }}"> {{ $items->access_name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="col-lg-12 mt-3">
                         <label for="boardName" class="form-label">Mô tả</label>
-                        <label for="desc"></label><textarea class="form-control desc"></textarea>
+                        <label for="desc"></label><textarea class="form-control desc" name="description"></textarea>
                     </div>
                     <div class="mt-4">
                         <div class="hstack gap-2 justify-content-end">
                             <button type="button" class="btn btn-light" data-bs-dismiss="modal">Thoát</button>
-                            <button type="button" class="btn btn-success" id="create" data-url="{{ route('table.store') }}">Tạo</button>
+                            <button type="submit" class="btn btn-success">Tạo</button>
                         </div>
                     </div>
                 </div>
+                </form>
             </div>
         </div>
     </div>
@@ -193,7 +193,7 @@
                                             <input class="form-check-input me-3" type="checkbox" value="" id="anna-adame">
                                             <label class="form-check-label d-flex align-items-center" for="anna-adame">
                                                                     <span class="flex-shrink-0">
-                                                                        <img src="assets/images/users/avatar-1.jpg" alt="" class="avatar-xxs rounded-circle" />
+                                                                        <img src=" {{ asset('default/assets/images/users/avatar-1.jpg') }}" alt="" class="avatar-xxs rounded-circle" />
                                                                     </span>
                                                 <span class="flex-grow-1 ms-2">
                                                                         Anna Adame
@@ -206,7 +206,7 @@
                                             <input class="form-check-input me-3" type="checkbox" value="" id="frank-hook">
                                             <label class="form-check-label d-flex align-items-center" for="frank-hook">
                                                                     <span class="flex-shrink-0">
-                                                                        <img src="assets/images/users/avatar-3.jpg" alt="" class="avatar-xxs rounded-circle" />
+                                                                        <img src=" {{ asset('default/assets/images/users/avatar-3.jpg') }}" alt="" class="avatar-xxs rounded-circle" />
                                                                     </span>
                                                 <span class="flex-grow-1 ms-2">
                                                                         Frank Hook
@@ -219,7 +219,7 @@
                                             <input class="form-check-input me-3" type="checkbox" value="" id="alexis-clarke">
                                             <label class="form-check-label d-flex align-items-center" for="alexis-clarke">
                                                                     <span class="flex-shrink-0">
-                                                                        <img src="assets/images/users/avatar-6.jpg" alt="" class="avatar-xxs rounded-circle" />
+                                                                        <img src=" {{ asset('default/assets/images/users/avatar-6.jpg') }}" alt="" class="avatar-xxs rounded-circle" />
                                                                     </span>
                                                 <span class="flex-grow-1 ms-2">
                                                                         Alexis Clarke
@@ -232,7 +232,7 @@
                                             <input class="form-check-input me-3" type="checkbox" value="" id="herbert-stokes">
                                             <label class="form-check-label d-flex align-items-center" for="herbert-stokes">
                                                                     <span class="flex-shrink-0">
-                                                                        <img src="assets/images/users/avatar-2.jpg" alt="" class="avatar-xxs rounded-circle" />
+                                                                        <img src=" {{ asset('default/assets/images/users/avatar-2.jpg') }}" alt="" class="avatar-xxs rounded-circle" />
                                                                     </span>
                                                 <span class="flex-grow-1 ms-2">
                                                                         Herbert Stokes
@@ -245,7 +245,7 @@
                                             <input class="form-check-input me-3" type="checkbox" value="" id="michael-morris">
                                             <label class="form-check-label d-flex align-items-center" for="michael-morris">
                                                                     <span class="flex-shrink-0">
-                                                                        <img src="assets/images/users/avatar-7.jpg" alt="" class="avatar-xxs rounded-circle" />
+                                                                        <img src=" {{ asset('default/assets/images/users/avatar-7.jpg') }}" alt="" class="avatar-xxs rounded-circle" />
                                                                     </span>
                                                 <span class="flex-grow-1 ms-2">
                                                                         Michael Morris
@@ -258,7 +258,7 @@
                                             <input class="form-check-input me-3" type="checkbox" value="" id="nancy-martino">
                                             <label class="form-check-label d-flex align-items-center" for="nancy-martino">
                                                                     <span class="flex-shrink-0">
-                                                                        <img src="assets/images/users/avatar-5.jpg" alt="" class="avatar-xxs rounded-circle" />
+                                                                        <img src=" {{ asset('default/assets/images/users/avatar-5.jpg') }}" alt="" class="avatar-xxs rounded-circle" />
                                                                     </span>
                                                 <span class="flex-grow-1 ms-2">
                                                                         Nancy Martino
@@ -271,7 +271,7 @@
                                             <input class="form-check-input me-3" type="checkbox" value="" id="thomas-taylor">
                                             <label class="form-check-label d-flex align-items-center" for="thomas-taylor">
                                                                     <span class="flex-shrink-0">
-                                                                        <img src="assets/images/users/avatar-8.jpg" alt="" class="avatar-xxs rounded-circle" />
+                                                                        <img src=" {{ asset('default/assets/images/users/avatar-8.jpg') }}" alt="" class="avatar-xxs rounded-circle" />
                                                                     </span>
                                                 <span class="flex-grow-1 ms-2">
                                                                         Thomas Taylor
@@ -284,7 +284,7 @@
                                             <input class="form-check-input me-3" type="checkbox" value="" id="tonya-noble">
                                             <label class="form-check-label d-flex align-items-center" for="tonya-noble">
                                                                     <span class="flex-shrink-0">
-                                                                        <img src="assets/images/users/avatar-10.jpg" alt="" class="avatar-xxs rounded-circle" />
+                                                                        <img src=" {{ asset('default/assets/images/users/avatar-10.jpg') }}" alt="" class="avatar-xxs rounded-circle" />
                                                                     </span>
                                                 <span class="flex-grow-1 ms-2">
                                                                         Tonya Noble

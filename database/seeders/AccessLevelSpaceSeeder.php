@@ -14,8 +14,8 @@ class AccessLevelSpaceSeeder extends Seeder
     public function run(): void
     {
         DB::table('access_level_spaces')->insert([
-            ['access_name' => 'private'],
-            ['access_name' => 'public'],
+            ['id' => 1,'access_name' => 'public'],
+            ['id' => 2,'access_name' => 'private'],
         ]);
     }
 }
