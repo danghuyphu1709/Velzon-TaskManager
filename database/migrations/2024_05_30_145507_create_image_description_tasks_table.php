@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('image_description_tasks', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(App\Models\Task::class)->constrained();
+            $table->foreignIdFor(App\Models\Task::class)->constrained()->onDelete('cascade');
             $table->string('image');
         });
     }

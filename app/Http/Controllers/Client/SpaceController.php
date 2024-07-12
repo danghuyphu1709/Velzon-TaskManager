@@ -8,15 +8,15 @@ use App\Http\Controllers\Controller;
 use App\Http\Repositories\Repository\SpaceRepository;
 use App\Http\Repositories\Repository\SpaceUserRepository;
 use App\Http\Requests\SpacesRequest;
-use App\Models\AccessLevelSpace;
-use App\Models\RoleSpace;
 use App\Models\Spaces;
-use App\Models\Tables;
-use App\Models\User;
-use Illuminate\Http\Request;
+use App\Models\SpaceUser;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use function Psy\debug;
+use Illuminate\Support\Facades\Request;
+use PHPUnit\Event\Exception;
+
 
 class SpaceController extends Controller
 {
@@ -34,7 +34,7 @@ class SpaceController extends Controller
      */
     public function index()
     {
-        //
+        return redirect()->back();
     }
 
     /**
@@ -42,17 +42,26 @@ class SpaceController extends Controller
      */
     public function store(SpacesRequest $request)
     {
-
         $validatedData = $request->validated();
         // tạo spaces
-        $validatedData['code'] = $this->spaceRepository->code();
-        $space = $this->spaceRepository->create($validatedData);
-        $this->spaceUserRepository->create([
-            'spaces_id' => $space->id,
-            'user_id' => Auth::user()->id,
-            'role_space_id' => UserHasRole::admin->value
-        ]);
-        return redirect()->route('spaces.show',$space->code);
+        try {
+            DB::beginTransaction();
+            $validatedData['code'] = $this->spaceRepository->code();
+            $space = $this->spaceRepository->create($validatedData);
+            $this->spaceUserRepository->create([
+                'spaces_id' => $space->id,
+                'user_id' => Auth::user()->id,
+                'is_created' => UserHasRole::admin->value,
+                'role_space_id' => UserHasRole::admin->value,
+            ]);
+            DB::commit();
+            return redirect()->route('spaces.show',$space->code);
+        }catch(\Mockery\Exception $exception){
+            DB::rollBack();
+            session()->flash('error', 'Lỗi hệ thống, vui lòng gửi lại sau');
+            return back();
+        }
+
     }
 
     /**
@@ -60,48 +69,84 @@ class SpaceController extends Controller
      */
     public function show(string $code)
     {
-        $spaceDetail = Spaces::where('code','=',$code)->with('AccessLevelSpace')->first();
-        $spaceUser  = Spaces::OrderBy('created_at','asc')->where('code','=',$code)->with('users')->get();
-        $members = [];
-        foreach ($spaceUser as $space) {
-            foreach ($space->users as $user) {
-                if($spaceDetail->access_level_space_id == TypeUnitEnum::public->value || Auth::user()->id == $user->id){
-                    $roleSpace = RoleSpace::find($user->pivot->role_space_id);
-                    if ($roleSpace) {
-                        $members[] = [
-                            'user' => $user,
-                            'role_name' => $roleSpace->role_name,
-                            'role_space_id' => $user->pivot->role_space_id
-                        ];
-                    }
-                }else{
-                    return redirect()->route('system.private');
-                }
 
+        session()->flash('error-alert', 'Lỗi hệ thống, vui lòng gửi lại sau');
+
+        $space = Spaces::query()->where('code',$code)->first();
+        if($space != null){
+            $auth = $space->users->where('id',Auth::user()->id)->first();
+            if(!$auth && $space->access_level_space_id == TypeUnitEnum::private->value){
+                return redirect()->route('system.private');
             }
+            return view(self::DEFAULT.__FUNCTION__,compact(['space','auth']));
+        }else{
+            return redirect()->route('home');
         }
-        $tableSpace = Tables::where('spaces_id','=',$spaceDetail->id)->get();
-
-        $spaces = User::find(Auth::user()->id)->Spaces()->get();
-        $tables = User::find(Auth::user()->id)->spaces()->with('tables')->get();
-
-
-        return view(self::DEFAULT.__FUNCTION__,compact(['spaceDetail','tableSpace','tables','spaces','members']));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(SpacesRequest $request, string $id)
     {
-        //
+        $space = $this->spaceRepository->update($id,$request->validated());
+        return redirect()->route('spaces.show',$space->code);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $code,int $user)
     {
-        //
+        $space = Spaces::query()->where('code',$code)->first();
+        $auth = $space->users->where('id',Auth::user()->id)->first();
+        if($auth && $auth->pivot->role_space_id == 1){
+            try {
+                $spaces_user = SpaceUser::query()->where('spaces_id', $space->id)
+                    ->where('user_id', $user);
+                $spaces_user->delete();
+                return redirect()->route('spaces.show', $space->code);
+            }catch (Exception $exception){
+                session()->flash('error', 'Lỗi hệ thống, vui lòng gửi lại sau');
+                return redirect()->back();
+            }
+        }else{
+            session()->flash('error', 'Lỗi hệ thống, vui lòng gửi lại sau');
+            return redirect()->back();
+        }
+    }
+
+    public function leave(Spaces $spaces)
+    {
+        $spaces_user = SpaceUser::query()->where('spaces_id', $spaces->id)
+            ->where('user_id', Auth::user()->id);
+        if ($spaces_user->first() != null) {
+            $created = $spaces_user->first();
+            $spaces_user->delete();
+            if($created->is_created){
+                $spaces->delete();
+                return redirect()->route('home');
+            }
+            return redirect()->route('home');
+        } else {
+            session()->flash('error', 'Lỗi hệ thống, vui lòng gửi lại sau');
+            return redirect()->back();
+        }
+    }
+
+    public function accede(Spaces $spaces)
+    {
+        try {
+             $this->spaceUserRepository->create([
+                'spaces_id' => $spaces->id,
+                'user_id' => Auth::user()->id,
+                'role_space_id' => UserHasRole::member->value
+            ]);
+            return redirect()->route('spaces.show', $spaces->code);
+        }catch(Exception $exception){
+            Log::debug($exception);
+            session()->flash('error', 'Lỗi hệ thống, vui lòng gửi lại sau');
+            return redirect()->back();
+        }
     }
 }

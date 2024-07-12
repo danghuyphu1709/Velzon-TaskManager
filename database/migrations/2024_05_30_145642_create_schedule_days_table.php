@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('schedule_days', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(App\Models\Task::class)->constrained();
+            $table->foreignIdFor(App\Models\Task::class)->constrained()->onDelete('cascade');
             $table->date('start_date');
             $table->datetime('end_date_time');
             $table->datetime('notification_date_time');

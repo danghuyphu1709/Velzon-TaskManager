@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('step_tasks', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(App\Models\Task::class)->constrained();
-            $table->string('content',25);
+            $table->foreignIdFor(App\Models\Task::class)->constrained()->onDelete('cascade');
+            $table->string('content',1000);
             $table->tinyInteger('status')->default(1);
         });
     }

@@ -13,10 +13,7 @@
     <link rel="shortcut icon" href="{{ asset('default/assets/images/favicon.ico') }}">
 
     <!-- jsvectormap css -->
-    <link href="{{ asset('default/assets/libs/jsvectormap/css/jsvectormap.min.css') }}" rel="stylesheet" type="text/css" />
-
     <!--Swiper slider css-->
-    <link href="{{ asset('default/assets/libs/swiper/swiper-bundle.min.css') }}" rel="stylesheet" type="text/css" />
 
     <!-- Layout config Js -->
     <script src="{{ asset('default/assets/js/layout.js') }}"></script>
@@ -30,7 +27,16 @@
     <link href="{{ asset('default/assets/css/custom.min.css') }}" rel="stylesheet" type="text/css" />
 
     <link href="{{ asset('default/vendor/config.css') }}" rel="stylesheet" type="text/css" />
+
+    <link href="{{ asset('default/vendor/toastify-js/toastify.main.css') }}" rel="stylesheet" type="text/css" />
+
     @yield('css')
+    <style>
+        .error{
+            margin-top: 10px;
+            color: red;
+        }
+    </style>
 </head>
 
 @include('client.layouts.header')
@@ -48,14 +54,11 @@
 <script src=" {{ asset('default/assets/libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 <script src=" {{ asset('default/assets/libs/simplebar/simplebar.min.js') }}"></script>
 <script src=" {{ asset('default/assets/libs/node-waves/waves.min.js') }}"></script>
+<script src=" {{ asset('default/assets/js/pages/plugins/lord-icon-2.1.0.js') }}"></script>
 <script src=" {{ asset('default/assets/libs/feather-icons/feather.min.js') }}"></script>
 
 <!-- apexcharts -->
 <script src=" {{ asset('default/assets/libs/apexcharts/apexcharts.min.js') }}"></script>
-
-<!-- Vector map-->
-<script src=" {{ asset('default/assets/libs/jsvectormap/js/jsvectormap.min.js') }}"></script>
-<script src=" {{ asset('default/assets/libs/jsvectormap/maps/world-merc.js') }}"></script>
 
 <!--Swiper slider js-->
 <script src=" {{ asset('default/assets/libs/swiper/swiper-bundle.min.js') }}"></script>
@@ -63,10 +66,15 @@
 <!-- Dashboard init -->
 <script src=" {{ asset('default/assets/js/pages/dashboard-ecommerce.init.js') }}"></script>
 
+<!-- notifications init -->
+<script src="{{ asset('default/vendor/toastify-js/toastify.main.js') }}"></script>
+
 <!-- App js -->
 <script src=" {{ asset('default/assets/js/app.js') }}"></script>
 
 <script src=" {{ asset('default/vendor/jquery/jquery.main.js')}}"></script>
+
+<script src=" {{ asset('default/vendor/jquery/jquery.validate.min.js')}}"></script>
 
 <script src=" {{ asset('default/vendor/main.js') }}"></script>
 

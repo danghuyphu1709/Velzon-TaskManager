@@ -1,4 +1,5 @@
 @section('modal')
+    <!-- Close icon Display -->
 <div class="modal fade" id="addmemberModal" tabindex="-1" aria-labelledby="addmemberModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content border-0">
@@ -66,7 +67,6 @@
     </div>
 </div>
 <!--end add member modal-->
-
 <div class="modal fade" id="createboardModal" tabindex="-1" aria-labelledby="createboardModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0">
@@ -80,12 +80,11 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <label for="boardName" class="form-label">Tên không gian</label>
-                            <input type="text" class="form-control" id="name" placeholder="" name="space_name">
-                            <span class="text-danger" id="error_name"></span>
+                            <input type="text" class="form-control" name="space_name">
                         </div>
                         <div class="col-lg-12 mt-3">
                             <label for="boardName" class="form-label ">Quyền xem</label>
-                            <select class="form-control" id="security" name="access_level_space_id">
+                            <select class="form-control" name="access_level_space_id">
                                 <option value="0" id="defaultSecurity">Chọn quyền</option>
                                 @foreach($accessLevel as $items)
                                 <option value="{{ $items->id }}"> {{ $items->access_name }}</option>
@@ -94,13 +93,13 @@
                         </div>
                         <div class="col-lg-12 mt-3">
                             <label for="boardName" class="form-label">Mô tả</label>
-                            <label for="desc"></label><textarea class="form-control" id="desc" name="space_description"></textarea>
+                            <label for="desc"></label><textarea class="form-control" name="space_description"></textarea>
                         </div>
 
                         <div class="mt-4">
                             <div class="hstack gap-2 justify-content-end">
                                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">Thoát</button>
-                                <button type="submit" class="btn btn-success">Tạo</button>
+                                <input class="submit btn btn-success"  type="submit" value="Tạo">
                             </div>
                         </div>
                     </div>
@@ -109,6 +108,7 @@
         </div>
     </div>
 </div>
+
 <!--end add board modal-->
 
 <div class="modal fade" id="createTableModal" tabindex="-1" aria-labelledby="createTableModalLabel" aria-hidden="true">

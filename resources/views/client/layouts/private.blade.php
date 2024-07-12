@@ -38,10 +38,9 @@
                         <div class="card-body p-4">
                             <div class="text-center">
                                 <lord-icon class="avatar-xl" src="https://cdn.lordicon.com/etwtznjn.json" trigger="loop" colors="primary:#405189,secondary:#0ab39c"></lord-icon>
-                                <h1 class="text-primary mb-4">Error !</h1>
-                                <h4 class="text-uppercase">Có lỗi sảy ra 😭</h4>
-                                <p class="text-muted mb-4">Xin lỗi, không gian này đang trong trạng thái bảo mật!</p>
-                                <a href=" {{ route('home') }}" class="btn btn-success"><i class="mdi mdi-home me-1"></i>Back to home</a>
+                                <h1 class="text-primary mb-4">Tham gia không gian làm việc ?</h1>
+                                <p class="text-muted mb-4">Xin lỗi không gian làm việc này bảo mật,Bạn cần được cấp phép mới có thể tham gia </p>
+                                <a href=" {{ route('home') }}" class="btn btn-success"><i class="mdi mdi-home me-1"></i>Quay lại trang chủ !</a>
                             </div>
                         </div>
                     </div>

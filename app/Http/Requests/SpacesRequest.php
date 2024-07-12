@@ -28,20 +28,10 @@ class SpacesRequest extends FormRequest
     public function rules(): array
     {
             $rule = [
-                'space_name' => 'required|string',
+                'space_name' => 'required|string|max:25',
                 'access_level_space_id' => 'required|exists:access_level_spaces,id',
-                'space_description' => 'nullable|string',
+                'space_description' => 'nullable|string|max:1000',
             ];
             return $rule;
-    }
-
-    protected function failedValidation(Validator $validator)
-    {
-        throw new HttpResponseException(
-            response()->json([
-                'message' => 'Validation Error',
-                'errors' => $validator->errors()
-            ], 422)
-        );
     }
 }

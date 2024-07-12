@@ -7,6 +7,7 @@ use \App\Http\Controllers\LoginGoogleController;
 use App\Http\Controllers\Client\HomeController;
 use App\Http\Controllers\Client\SpaceController;
 use \App\Http\Controllers\Client\TableController;
+use \App\Http\Services\SendMailConfirmSpace;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -34,6 +35,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/',[HomeController::class,'index'])->name('home');
     /* Space Controller */
     Route::resource('spaces',SpaceController::class);
+    Route::delete('space/leave/{spaces}',[SpaceController::class,'leave'])->name('space.leave');
+    Route::post('space/accede/{spaces}',[SpaceController::class,'accede'])->name('space.accede');
+    Route::post('space/destroy/{spaces}/{user}',[SpaceController::class,'destroy'])->name('space.destroy');
+
+    Route::get('velzon/confirm-member/{token}',[SendMailConfirmSpace::class,'acceptAccede'])->name('space.acceptAccede');
+
+
+    Route::post('space/addMember/{spaces}',[SendMailConfirmSpace::class,'sendMailConfirmMember'])->name('send.member');
+
     /* Table Controller */
     Route::resource('tables',TableController::class);
 });
