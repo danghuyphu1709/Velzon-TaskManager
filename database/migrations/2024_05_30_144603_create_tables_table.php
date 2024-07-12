@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('tables', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(App\Models\Spaces::class)->constrained();
+            $table->foreignIdFor(App\Models\Spaces::class)->constrained()->onDelete('cascade');
             $table->string('code',25)->index();
-            $table->string('description',255)->nullable();
-            $table->string('title',25);
+            $table->string('description',1000)->nullable();
+            $table->string('title',255);
             $table->tinyInteger('important')->default(0);
             $table->timestamps();
         });

@@ -1,15 +1,10 @@
 @extends('client.layouts.master')
 @include('client.home.sidebar')
-@section('js')
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="{{ asset('default/vendor/delete.js') }}"></script>
-@endsection
+
 @section('content')
 <div class="main-content">
-
-    <div class="page-content">
+<div class="page-content">
         <div class="container-fluid">
-
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card mt-n4 mx-n4">
@@ -27,11 +22,26 @@
                                             </div>
                                             <div class="col-md">
                                                 <div>
-                                                    <h4 class="fw-bold">{{ $spaceDetail->space_name }}</h4>
+                                                    <form action=" {{ route('spaces.update',$space->id) }}"
+                                                          method="post" id="form-edit-space">
+                                                        <div id="title_old" class="d-flex" style=" gap: 9px"><h4
+                                                                class="fw-bold mt-3">{{ $space->space_name }}</h4>
+                                                            @if($auth != null)
+                                                                @if( $auth->pivot->role_space_id == \App\Enums\UserHasRole::admin->value)
+                                                                    <button data-bs-toggle="modal"
+                                                                            data-bs-target="#updateBoardModal"
+                                                                            class="btn" type="button"
+                                                                            id="edit-title-space"><i
+                                                                            class="ri-pencil-line"
+                                                                            style="font-size: 23px"></i></button>
+                                                                @endif
+                                                            @endif
+                                                        </div>
+                                                    </form>
                                                     <div class="hstack gap-3 flex-wrap">
-                                                        <div><i class="ri-building-line align-bottom me-1"></i> {{ $spaceDetail->AccessLevelSpace->access_name }}</div>
+                                                        <div><i class="ri-building-line align-bottom me-1"></i> {{ $space->AccessLevelSpace->access_name }}</div>
                                                         <div class="vr"></div>
-                                                        <div>Create Date : <span class="fw-medium">{{ $spaceDetail->created_at }}</span></div>
+                                                        <div>Create Date : <span class="fw-medium">{{ $space->created_at }}</span></div>
                                                         <div class="vr"></div>
                                                         <div class="vr"></div>
                                                         <div class="badge rounded-pill bg-info fs-12">New</div>
@@ -43,36 +53,29 @@
                                     </div>
                                     <div class="col-md-auto">
                                         <div class="hstack gap-1 flex-wrap">
-                                            <button type="button" class="btn py-0 fs-16 favourite-btn active">
-                                                <i class="ri-star-fill"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-primary " data-bs-toggle="modal" data-bs-target="#firstmodal"><i class="ri-logout-box-r-line"></i></button>
-{{--                                            <form action="{{ route('space.leave', $spaceDetail->id) }}" method="post" class="deleteUserSpace" data-url="{{ route('space.destroy', ['user_id' => $item['user']->id, 'space_id' => $spaceDetail->id]) }}">--}}
-{{--                                                @csrf--}}
-{{--                                                @method('DELETE')--}}
-{{--                                                <button type="submit" class="btn py-0 fs-16 text-body">--}}
-{{--                                                    <i class="ri-logout-box-r-line"></i>--}}
-{{--                                                </button>--}}
-{{--                                            </form>--}}
+                                            @if($auth != null)
+                                                <button type="button" class="btn btn-primary " data-bs-toggle="modal" data-bs-target="#leaveModal"><i class="ri-logout-box-r-line"></i></button>
+                                            @else
+                                                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#accedeModal"><i class="ri-logout-box-line"></i></button>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
-
                                 <ul class="nav nav-tabs-custom border-bottom-0" role="tablist">
                                     <li class="nav-item">
                                         <a class="nav-link active fw-semibold" data-bs-toggle="tab" href="#project-overview" role="tab">
                                             Thông tin
                                         </a>
                                     </li>
-                                    @foreach ($members as $item)
-                                    @if (Auth::user()->id == $item['user']->id && $item['role_space_id'] == 1)
-                                            <li class="nav-item">
-                                                <a class="nav-link fw-semibold" data-bs-toggle="tab" href="#project-team" role="tab">
+                                    <li class="nav-item">
+                                        @if($auth != null)
+                                         @if( $auth->pivot->role_space_id == \App\Enums\UserHasRole::admin->value)
+                                         <a class="nav-link fw-semibold" data-bs-toggle="tab" href="#project-team" role="tab">
                                                     Quản lý thành viên
-                                                </a>
-                                            </li>
-                                    @endif
-                                    @endforeach
+                                         </a>
+                                         @endif
+                                        @endif
+                                    </li>
                                 </ul>
                             </div>
                             <!-- end card body -->
@@ -93,11 +96,11 @@
                                         <div class="card-body">
                                             <div class="text-muted">
                                                 <h6 class="mb-3 fw-semibold text-uppercase"> Mô tả </h6>
-                                                <p>{{ $spaceDetail->space_description }}</p>
+                                                <p>{{ $space->space_description }}</p>
                                                 <div class="pt-3 border-top border-top-dashed mt-4">
                                                     <h6 class="mb-3 fw-semibold text-uppercase">Bảng</h6>
                                                         <div class="row">
-                                                            @foreach($tableSpace as $table)
+                                                            @foreach($space->tables as $table)
                                                                 <div class="col-xxl-3 col-sm-6 project-card">
                                                                     <div class="card card-height-100">
                                                                         <div class="card-body">
@@ -205,29 +208,32 @@
                                 <div class="col-xl-3 col-lg-4">
                                     <div class="card">
                                         <div class="card-header align-items-center d-flex border-bottom-dashed">
-                                            <h4 class="card-title mb-0 flex-grow-1">Members</h4>
+                                            <h4 class="card-title mb-0 flex-grow-1">Thành viên</h4>
                                             <div class="flex-shrink-0">
-                                                <button type="button" class="btn btn-soft-danger btn-sm" data-bs-toggle="modal" data-bs-target="#inviteMembersModal"><i class="ri-share-line me-1 align-bottom"></i> Invite Member</button>
+
                                             </div>
                                         </div>
 
                                         <div class="card-body">
                                             <div data-simplebar style="height: 235px;" class="mx-n3 px-3">
                                                 <div class="vstack gap-3">
-                                                    @foreach($members as $item)
+                                                    @foreach($space->users as $item)
                                                     <div class="d-flex align-items-center">
                                                         <div class="avatar-xs flex-shrink-0 me-3">
-                                                            <img src="{{ $item['user']->avatar }}" alt="" class="img-fluid rounded-circle">
+                                                            <img src="{{ $item->avatar }}" alt="" class="img-fluid rounded-circle">
                                                         </div>
                                                         <div class="flex-grow-1">
-                                                            <h5 class="fs-13 mb-0">{{ $item['user']->name}}</h5>
+                                                            <h5 class="fs-13 mb-0">{{ $item->name}}</h5>
                                                         </div>
                                                             <div class="flex-shrink-0">
                                                             <div class="d-flex align-items-center gap-1">
-                                                                    <button type="button" class="btn btn-light btn-sm">{{ $item['role_name'] }}</button>
+                                                                @if($item->pivot->role_space_id == 1)
+                                                                    <button type="button" class="btn btn-light btn-sm">Quản trị viên</button>
+                                                                @else
+                                                                    <button type="button" class="btn btn-light btn-sm">Thành viên</button>
+                                                                @endif
                                                             </div>
                                                         </div>
-
                                                     </div>
                                                     @endforeach
                                                     <!-- end member item -->
@@ -246,80 +252,115 @@
                             </div>
                             <!-- end row -->
                         </div>
-                    </div>
-                    <div class="tab-pane fade" id="project-team" role="tabpanel">
-                        <div class="row g-4 mb-3">
-                            <div class="col-sm">
-                                <div class="d-flex">
-                                    <div class="search-box me-2">
-                                        <input type="text" class="form-control" placeholder="Search member...">
-                                        <i class="ri-search-line search-icon"></i>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-auto">
-                                <div>
-                                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#inviteMembersModal"><i class="ri-share-line me-1 align-bottom"></i> Invite Member</button>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- end row -->
-
-                        <div class="team-list list-view-filter">
-                            @foreach ($members as $item)
-
-                                @if (Auth::user()->id != $item['user']->id)
-                                    <div class="card team-box" id="card_items">
-                                        <div class="card-body px-4">
-                                            <div class="row align-items-center team-row">
-                                                <div class="col team-settings">
-                                                    <div class="row align-items-center">
-                                                        <div class="col">
-                                                            <div class="flex-shrink-0 me-2">
-                                                                <button type="button" class="btn fs-16 p-0 favourite-btn">
-                                                                    <i class="ri-star-fill"></i>
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col text-end dropdown">
-                                                            <a href="javascript:void(0);" data-bs-toggle="dropdown" aria-expanded="false">
-                                                                <i class="ri-more-fill fs-17"></i>
-                                                            </a>
-                                                            <ul class="dropdown-menu dropdown-menu-end">
-                                                                <li><button class="dropdown-item" href="javascript:void(0);"><i class="ri-star-fill text-muted me-2 align-bottom"></i>Quản trị viên</button></li>
-                                                                <form action="{{ route('space.destroy', ['user_id' => $item['user']->id, 'space_id' => $spaceDetail->id]) }}" method="post" class="deleteUserSpace" data-url="{{ route('space.destroy', ['user_id' => $item['user']->id, 'space_id' => $spaceDetail->id]) }}">
-                                                                    @csrf
-                                                                    @method('DELETE')
-                                                                    <li><button class="dropdown-item" type="submit"><i class="ri-delete-bin-5-fill text-muted me-2 align-bottom"></i>Xóa</button></li>
-                                                                </form>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-4 col">
-                                                    <div class="team-profile-img">
-                                                        <div class="avatar-lg img-thumbnail rounded-circle">
-                                                            <img src="{{ $item['user']->avatar }}" alt="" class="img-fluid d-block rounded-circle" />
-                                                        </div>
-                                                        <div class="team-content">
-                                                            <a href="#" class="d-block">
-                                                                <h5 class="fs-16 mb-1">{{ $item['user']->name }}</h5>
-                                                            </a>
-                                                            <p class="text-muted mb-0">{{ $item['role_name'] }}</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                        <div class="tab-pane fade" id="project-team" role="tabpanel">
+                            <div class="row g-4 mb-3">
+                                <div class="col-sm">
+                                    <div class="d-flex">
+                                        <div class="search-box me-2">
+                                            <input type="text" class="form-control" placeholder="Search member...">
+                                            <i class="ri-search-line search-icon"></i>
                                         </div>
                                     </div>
-                                @endif
+                                </div>
+                                <div class="col-sm-auto">
+                                    <div>
+                                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#addMemberModal"><i class="ri-share-line me-1 align-bottom"></i> Invite Member</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end row -->
+                            <div class="team-list list-view-filter">
+                                @foreach ($space->users as $item)
+                                    @if($item->id === Auth::user()->id)
+                                        <div class="card team-box" id="card_items">
+                                            <div class="card-body px-4">
+                                                <div class="row align-items-center team-row">
+                                                    <div class="col team-settings">
+
+                                                    </div>
+                                                    <div class="col-lg-4 col">
+                                                        <div class="team-profile-img">
+                                                            <div class="avatar-lg img-thumbnail rounded-circle">
+                                                                <img src="{{ $item->avatar }}" alt="" class="img-fluid d-block rounded-circle" />
+                                                            </div>
+                                                            <div class="team-content">
+                                                                <a href="#" class="d-block">
+                                                                    <h5 class="fs-16 mb-1">{{ $item->name }}</h5>
+                                                                </a>
+                                                                <p class="text-muted mb-0"></p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                @if($item->pivot->role_space_id == 1)
+                                                    <button type="button" class="btn btn-light btn-sm mt-3">Quản trị viên(Bạn)</button>
+                                                @else
+                                                    <button type="button" class="btn btn-light btn-sm mt-3">Thành viên(Bạn)</button>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    @else
+                                        <div class="card team-box" id="card_items">
+                                            <div class="card-body px-4">
+                                                <div class="row align-items-center team-row">
+                                                    <div class="col team-settings">
+                                                        <div class="row align-items-center">
+                                                            <div class="col">
+                                                                <div class="flex-shrink-0 me-2">
+
+                                                                </div>
+                                                            </div>
+                                                            <div class="col text-end dropdown">
+                                                                <a href="javascript:void(0);" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                    <i class="ri-more-fill fs-17"></i>
+                                                                </a>
+                                                                <ul class="dropdown-menu dropdown-menu-end">
+                                                                    @if($item->pivot->role_space_id == 1)
+                                                                        <li><button class="dropdown-item" href="javascript:void(0);"><i class="ri-star-fill text-muted me-2 align-bottom"></i>Xóa quản trị viên</button></li>
+                                                                    @else
+                                                                        <li><button class="dropdown-item" href="javascript:void(0);"><i class="ri-star-fill text-muted me-2 align-bottom"></i>Thêm quản trị viên</button></li>
+                                                                    @endif
+                                                                    <form action="{{ route('space.destroy',['spaces' => $space->code, 'user' => $item->id]) }}" method="post" class="deleteUserSpace">
+                                                                        @csrf
+                                                                        @method('POST')
+                                                                        <li><button class="dropdown-item" type="submit"><i class="ri-delete-bin-5-fill text-muted me-2 align-bottom"></i>Xóa</button></li>
+                                                                    </form>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4 col">
+                                                        <div class="team-profile-img">
+                                                            <div class="avatar-lg img-thumbnail rounded-circle">
+                                                                <img src="{{ $item->avatar }}" alt="" class="img-fluid d-block rounded-circle" />
+                                                            </div>
+                                                            <div class="team-content">
+                                                                <a href="#" class="d-block">
+                                                                    <h5 class="fs-16 mb-1">{{ $item->name }}</h5>
+                                                                </a>
+                                                                <p class="text-muted mb-0"></p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                @if($item->pivot->role_space_id == 1)
+                                                    <button type="button" class="btn btn-light btn-sm mt-3">Quản trị viên</button>
+                                                @else
+                                                    <button type="button" class="btn btn-light btn-sm mt-3">Thành viên</button>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    @endif
+                                @endforeach
+                            </div>
+                        </div>
                     </div>
-                </div>
                 <!-- end col -->
             </div>
             <!-- end row -->
         </div>
-            <div class="modal fade" id="firstmodal" aria-hidden="true" aria-labelledby="..." tabindex="-1">
+            <!-- LeaveModal -->
+            <div class="modal fade" id="leaveModal" aria-hidden="true" aria-labelledby="..." tabindex="-1">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-body text-center p-5">
@@ -333,20 +374,200 @@
                                 <h4>Rời khỏi không gian làm việc!</h4>
                                 <p class="text-muted"> bạn có muốn rời khỏi không gian làm việc này ? </p>
                                 <!-- Toogle to second dialog -->
-{{--                                <form action="{{ route('space.leave', $spaceDetail->id) }}" method="post">--}}
-{{--                                    @csrf--}}
-{{--                                    @method('DELETE')--}}
-{{--                                    <button class="btn btn-warning" type="submit">Continue</button>--}}
-{{--                                </form>--}}
+                                <form action="{{ route('space.leave', $space->id) }}" method="post">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button class="btn btn-warning" type="submit">Rời khỏi</button>
+                                </form>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        <!-- container-fluid -->
+            <!-- accedeModal -->
+            <div class="modal fade" id="accedeModal" aria-hidden="true" aria-labelledby="..." tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-body text-center p-5">
+                            <lord-icon
+                                src="https://cdn.lordicon.com/lupuorrc.json"
+                                trigger="loop"
+                                colors="primary:#121331,secondary:#08a88a"
+                                style="width:120px;height:120px">
+                            </lord-icon>
+                            <div class="mt-4 pt-4">
+                                <h4>Tham gia không gian làm việc!</h4>
+                                <p class="text-muted"> Bạn có muốn tham gia  không gian làm việc này ? </p>
+                                <!-- Toogle to second dialog -->
+                                <form action="{{ route('space.accede',$space) }}" method="post">
+                                    @csrf
+                                    @method('POST')
+                                    <button class="btn btn-success" type="submit">Tham gia</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="addMemberModal" class="modal fade" tabindex="-1" aria-hidden="true" style="display: none;">
+                <div class="modal-dialog modal-dialog-centered modal-lg">
+                    <div class="modal-content border-0 overflow-hidden">
+                        <form action="{{ route('send.member',$space) }}" method="post" id="add-member">
+                            @csrf
+                            @method('POST')
+                        <div class="row g-0">
+                            <div class="col-lg-7">
+                                <div class="modal-body p-5">
+                                    <h2 class="lh-base">Thêm thành viên</h2>
+                                    <div class="row mb-3">
+                                        <input type="text" class="form-control" placeholder="Enter your email" name="email_member" aria-label="Example text with button addon" aria-describedby="button-addon1">
+                                    </div>
+                                    <button class="btn btn-primary" type="submit" id="button-addon1">Send Now</button>
+                                </div>
+                            </div>
+                            <div class="col-lg-5">
+                                <div class="subscribe-modals-cover h-100">
+                                    <img src="{{ asset('default/assets/images/auth-one-bg.jpg') }}" alt="" class="h-100 w-100 object-fit-cover" style="clip-path: polygon(100% 0%, 100% 100%, 100% 100%, 0% 100%, 25% 50%, 0% 0%);">
+                                </div>
+                            </div>
+                        </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
         @include('client.layouts.modal')
-        @endforeach
     </div>
     <!-- End Page-content -->
 </div>
+<div class="modal fade" id="updateBoardModal" tabindex="-1" aria-labelledby="updateBoardModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0">
+                <div class="modal-header p-3 bg-info-subtle">
+                    <h5 class="modal-title" id="updateBoardModalLabel">Sửa không gian</h5>
+                    <button type="button" class="btn-close" id="addBoardBtn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action=" {{ route('spaces.update',$space->id) }} " method="post" id="updateBoardForm">
+                        @method('PUT')
+                        @csrf
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <label for="boardName" class="form-label">Tên không gian</label>
+                                <input type="text" class="form-control" name="space_name" value="{{ $space->space_name }}">
+                            </div>
+                            <div class="col-lg-12 mt-3">
+                                <label for="boardName" class="form-label ">Quyền xem</label>
+                                <select class="form-control" name="access_level_space_id">
+                                    @foreach($accessLevel as $item)
+                                        @if($space->access_level_space_id == $item->id)
+                                            <option value="{{ $item->id }}" selected> {{ $item->access_name }}</option>
+                                        @else
+                                            <option value="{{ $item->id }}"> {{ $item->access_name }}</option>
+                                        @endif
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-lg-12 mt-3">
+                                <label for="boardName" class="form-label">Mô tả</label>
+                                <textarea class="form-control" name="space_description" >{{ $space->space_description }}</textarea>
+                            </div>
+
+                            <div class="mt-4">
+                                <div class="hstack gap-2 justify-content-end">
+                                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Thoát</button>
+                                    <input type="submit" class="btn btn-success"  value="Sửa">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    @if(session('error'))
+        <script>
+            alert('{{ session('error') }}');
+        </script>
+    @endif
 @endsection
+@section('js')
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="{{ asset('default/vendor/delete.js') }}"></script>
+    <script>
+
+        @if(session('error-alert'))
+        Toastify({
+            text: @json(session('error-alert')),
+            duration: 3000,
+            newWindow: true,
+            close: true,
+            gravity: "top", // `top` or `bottom`
+            position: "center", // `left`, `center` or `right`
+            stopOnFocus: true, // Prevents dismissing of toast on hover
+            style: {
+                background: "linear-gradient(to right, #00b09b, #96c93d)",
+            },
+        }).showToast();
+        @endif
+
+        $(document).ready(function() {
+            // space update
+            var modalUpdateSpace = $('#updateBoardModal');
+            var formUpdate = modalUpdateSpace.find('#updateBoardForm');
+
+            var addMemberModal = $('#addMemberModal')
+            var addMember = addMemberModal.find("#add-member");
+
+            addMember.validate({
+                rules: {
+                    toMember: {
+                        required: true,
+                        email: true,
+                    }
+                },
+                messages: {
+                    toMember: {
+                        required: "Vui lòng nhập trường này!",
+                        email: "Vui lòng nhập một địa chỉ email hợp lệ!",
+                    },
+                },
+                submitHandler: function(form) {
+                    form.submit();
+                }
+            });
+            formUpdate.validate({
+                rules: {
+                    space_name: {
+                        required: true,
+                        minlength: 3,
+                        maxlength: 255
+                    },
+                    access_level_space_id: {
+                        required: true,
+                        min: 1
+                    },
+                    space_description : {
+                        maxlength: 1000
+                    }
+                },
+                messages: {
+                    space_name: {
+                        required: "Vui lòng nhập trường này !",
+                        minlength: "Tên không gian quá ngắn !",
+                        maxlength: "Tên không gian quá dài !",
+                    },
+                    access_level_space_id : "Vui lòng  chọn trường này !",
+                    space_description : 'Mô tả không gian quá dài !'
+                },
+                submitHandler: function(form) {
+                    form.submit();
+                }
+            });
+
+        });
+    </script>
+
+@endsection
+

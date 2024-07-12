@@ -2,8 +2,14 @@
 @include('client.home.sidebar')
 
 @section('content')
-<div class="vertical-overlay"></div>
 
+    @if(session('error'))
+        <script>
+            alert('{{ session('error') }}');
+        </script>
+    @endif
+
+<div class="vertical-overlay"></div>
  <div class="main-content">
             <div class="page-content">
                 <div class="container-fluid">
@@ -133,6 +139,8 @@
                     @endforeach
                     <!-- end row -->
 
+                    <!-- Danger Alert -->
+
                 </div>
                 <!-- container-fluid -->
             </div>
@@ -140,3 +148,5 @@
              @include('client.layouts.modal');
         </div>
 @endsection
+<!-- Close icon Display -->
+

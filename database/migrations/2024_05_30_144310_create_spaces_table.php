@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(App\Models\AccessLevelSpace::class)->constrained();
             $table->string('code',25)->index();
-            $table->string('space_name',25);
-            $table->string('space_description',255)->nullable();
+            $table->string('space_name',255);
+            $table->string('space_description',1000)->nullable();
             $table->timestamps();
         });
     }

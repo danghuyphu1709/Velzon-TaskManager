@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('image_comments', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(App\Models\CommentTask::class)->constrained();
+            $table->foreignIdFor(App\Models\CommentTask::class)->constrained()->onDelete('cascade');
             $table->string('image',255);
         });
     }

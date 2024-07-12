@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(App\Models\ListTask::class)->constrained();
-            $table->string('task_name',25);
+            $table->foreignIdFor(App\Models\ListTask::class)->constrained()->onDelete('cascade');
+            $table->string('task_name',255);
             $table->string('task_image',255);
-            $table->string('task_description',255);
+            $table->string('task_description',1000);
             $table->tinyInteger('priority')->default(0);
             $table->tinyInteger('status')->default(1);
             $table->timestamps();

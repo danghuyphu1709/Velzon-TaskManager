@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('step_tasks', function (Blueprint $table) {
+        Schema::create('confirm_members', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(App\Models\Task::class)->constrained()->onDelete('cascade');
-            $table->string('content',1000);
-            $table->tinyInteger('status')->default(1);
+            $table->string('token',255);
+            $table->string('space_code',255);
+            $table->string('email_member',255);
+            $table->timestamps();
         });
     }
 
@@ -24,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('step_tasks');
+        Schema::dropIfExists('confirm_members');
     }
 };

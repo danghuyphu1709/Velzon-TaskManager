@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('activity_history_tables', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(App\Models\Tables::class)->constrained();;
+            $table->foreignIdFor(App\Models\Tables::class)->constrained()->onDelete('cascade');
             $table->string('content',255);
             $table->timestamps();
         });

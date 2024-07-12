@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -49,6 +50,7 @@ class User extends Authenticatable
         return $this->belongsToMany(Spaces::class, 'space_users', 'user_id', 'spaces_id')
             ->withPivot('role_space_id');
     }
+
     public function tables()
     {
         return $this->belongsToMany(Spaces::class, 'user_has_role_tables', 'user_id', 'tables_id');

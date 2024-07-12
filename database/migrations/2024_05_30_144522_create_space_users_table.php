@@ -12,9 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('space_users', function (Blueprint $table) {
-            $table->foreignIdFor(App\Models\Spaces::class)->constrained();
-            $table->foreignIdFor(App\Models\User::class)->constrained();
-            $table->foreignIdFor(App\Models\RoleSpace::class)->constrained();;
+            $table->foreignIdFor(App\Models\Spaces::class)->constrained()->onDelete('cascade');
+            $table->foreignIdFor(App\Models\User::class)->constrained()->onDelete('cascade');
+            $table->foreignIdFor(App\Models\RoleSpace::class)->constrained();
+            $table->boolean('is_created')->default(0);
+            $table->primary(['spaces_id','user_id']);
         });
     }
 
