@@ -55,7 +55,7 @@ class SpaceController extends Controller
                 'role_space_id' => UserHasRole::admin->value,
             ]);
             DB::commit();
-            return redirect()->route('spaces.show',$space->code);
+            return redirect()->route('khong-gian.show',$space->code);
         }catch(\Mockery\Exception $exception){
             DB::rollBack();
             session()->flash('error', 'Lỗi hệ thống, vui lòng gửi lại sau');
@@ -69,9 +69,6 @@ class SpaceController extends Controller
      */
     public function show(string $code)
     {
-
-        session()->flash('error-alert', 'Lỗi hệ thống, vui lòng gửi lại sau');
-
         $space = Spaces::query()->where('code',$code)->first();
         if($space != null){
             $auth = $space->users->where('id',Auth::user()->id)->first();
@@ -90,7 +87,7 @@ class SpaceController extends Controller
     public function update(SpacesRequest $request, string $id)
     {
         $space = $this->spaceRepository->update($id,$request->validated());
-        return redirect()->route('spaces.show',$space->code);
+        return redirect()->route('khong-gian.show',$space->code);
     }
 
     /**
@@ -105,7 +102,7 @@ class SpaceController extends Controller
                 $spaces_user = SpaceUser::query()->where('spaces_id', $space->id)
                     ->where('user_id', $user);
                 $spaces_user->delete();
-                return redirect()->route('spaces.show', $space->code);
+                return redirect()->route('khong-gian.show', $space->code);
             }catch (Exception $exception){
                 session()->flash('error', 'Lỗi hệ thống, vui lòng gửi lại sau');
                 return redirect()->back();
@@ -142,7 +139,7 @@ class SpaceController extends Controller
                 'user_id' => Auth::user()->id,
                 'role_space_id' => UserHasRole::member->value
             ]);
-            return redirect()->route('spaces.show', $spaces->code);
+            return redirect()->route('khong-gian.show', $spaces->code);
         }catch(Exception $exception){
             Log::debug($exception);
             session()->flash('error', 'Lỗi hệ thống, vui lòng gửi lại sau');

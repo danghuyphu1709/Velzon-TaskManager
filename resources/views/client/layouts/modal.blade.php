@@ -1,72 +1,6 @@
 @section('modal')
-    <!-- Close icon Display -->
-<div class="modal fade" id="addmemberModal" tabindex="-1" aria-labelledby="addmemberModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content border-0">
-            <div class="modal-header p-3 bg-warning-subtle">
-                <h5 class="modal-title" id="addmemberModalLabel">Add Member</h5>
-                <button type="button" class="btn-close" id="btn-close-member" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <div class="row g-3">
-                        <div class="col-lg-12">
-                            <label for="submissionidInput" class="form-label">Submission ID</label>
-                            <input type="number" class="form-control" id="submissionidInput" placeholder="Submission ID">
-                        </div>
-                        <!--end col-->
-                        <div class="col-lg-12">
-                            <label for="profileimgInput" class="form-label">Profile Images</label>
-                            <input class="form-control" type="file" id="profileimgInput">
-                        </div>
-                        <!--end col-->
-                        <div class="col-lg-6">
-                            <label for="firstnameInput" class="form-label">First Name</label>
-                            <input type="text" class="form-control" id="firstnameInput" placeholder="Enter firstname">
-                        </div>
-                        <!--end col-->
-                        <div class="col-lg-6">
-                            <label for="lastnameInput" class="form-label">Last Name</label>
-                            <input type="text" class="form-control" id="lastnameInput" placeholder="Enter lastname">
-                        </div>
-                        <!--end col-->
-                        <div class="col-lg-12">
-                            <label for="designationInput" class="form-label">Designation</label>
-                            <input type="text" class="form-control" id="designationInput" placeholder="Designation">
-                        </div>
-                        <!--end col-->
-                        <div class="col-lg-12">
-                            <label for="titleInput" class="form-label">Title</label>
-                            <input type="text" class="form-control" id="titleInput" placeholder="Title">
-                        </div>
-                        <!--end col-->
-                        <div class="col-lg-6">
-                            <label for="numberInput" class="form-label">Phone Number</label>
-                            <input type="text" class="form-control" id="numberInput" placeholder="Phone number">
-                        </div>
-                        <!--end col-->
-                        <div class="col-lg-6">
-                            <label for="joiningdateInput" class="form-label">Joining Date</label>
-                            <input type="text" class="form-control" id="joiningdateInput" data-provider="flatpickr" placeholder="Select date">
-                        </div>
-                        <!--end col-->
-                        <div class="col-lg-12">
-                            <label for="emailInput" class="form-label">Email ID</label>
-                            <input type="email" class="form-control" id="emailInput" placeholder="Email">
-                        </div>
-                        <!--end col-->
-                    </div>
-                    <!--end row-->
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-light" data-bs-dismiss="modal"><i class="ri-close-line align-bottom me-1"></i> Close</button>
-                <button type="button" class="btn btn-success" id="addMember">Add Member</button>
-            </div>
-        </div>
-    </div>
-</div>
-<!--end add member modal-->
+
+<!-- create Board Modal-->
 <div class="modal fade" id="createboardModal" tabindex="-1" aria-labelledby="createboardModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0">
@@ -75,7 +9,7 @@
                 <button type="button" class="btn-close" id="addBoardBtn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action=" {{ route('spaces.store') }} " method="post" id="createboardForm">
+                <form action=" {{ route('khong-gian.store') }} " method="post" id="createboardForm">
                     @csrf
                     <div class="row">
                         <div class="col-lg-12">
@@ -109,8 +43,7 @@
     </div>
 </div>
 
-<!--end add board modal-->
-
+<!--create Table Modal-->
 <div class="modal fade" id="createTableModal" tabindex="-1" aria-labelledby="createTableModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0">
@@ -119,17 +52,16 @@
                 <button type="button" class="btn-close" id="addBoardBtn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action=" {{ route('tables.store') }} " method="post" id="createTableForm">
+                <form action=" {{ route('bang.store') }} " method="post" id="createTableForm">
                     @csrf
                 <div class="row">
                     <div class="col-lg-12">
                         <label for="boardName" class="form-label">Tên bảng</label>
                         <input type="text" class="form-control name" name="title">
-                        <span class="text-danger" id="error_name"></span>
                     </div>
                     <div class="col-lg-12 mt-3">
                         <label for="boardName" class="form-label">Không gian làm việc</label>
-                        <select class="form-control space" name="spaces_id" id="space">
+                        <select class="form-control space" name="spaces_id">
                             <option value="0" id="defaultSpace">Chọn không gian</option>
                             @foreach($spaces as $items)
                                 <option value="{{ $items->id }}"> {{ $items->space_name}}</option>
@@ -143,7 +75,7 @@
                     <div class="mt-4">
                         <div class="hstack gap-2 justify-content-end">
                             <button type="button" class="btn btn-light" data-bs-dismiss="modal">Thoát</button>
-                            <button type="submit" class="btn btn-success">Tạo</button>
+                            <input type="submit" class="btn btn-success" value="Tạo">
                         </div>
                     </div>
                 </div>

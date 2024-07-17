@@ -26,6 +26,7 @@ class Spaces extends Model
     {
         return $this->hasMany(Tables::class);
     }
+
     public function AccessLevelSpace()
     {
         return $this->belongsTo(AccessLevelSpace::class);
