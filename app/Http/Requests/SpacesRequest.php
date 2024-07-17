@@ -34,4 +34,13 @@ class SpacesRequest extends FormRequest
             ];
             return $rule;
     }
+
+    protected function failedValidation(Validator $validator)
+    {
+        // Lưu thông tin lỗi vào session
+        session()->flash('alert-error', $validator->errors()->first());
+
+        throw new HttpResponseException(redirect()->back()->withErrors($validator)->withInput());
+    }
+
 }

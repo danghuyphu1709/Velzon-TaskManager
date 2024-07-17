@@ -3,7 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Contracts\Validation\Validator;
 class TableRequest extends FormRequest
 {
     /**
@@ -27,5 +28,13 @@ class TableRequest extends FormRequest
             'description' => 'nullable|string',
         ];
         return $rule;
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        // Lưu thông tin lỗi vào session
+        session()->flash('alert-error', $validator->errors()->first());
+
+        throw new HttpResponseException(redirect()->back()->withErrors($validator)->withInput());
     }
 }

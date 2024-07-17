@@ -34,18 +34,18 @@ Route::middleware('auth')->group(function () {
     /* Home Controller */
     Route::get('/',[HomeController::class,'index'])->name('home');
     /* Space Controller */
-    Route::resource('spaces',SpaceController::class);
-    Route::delete('space/leave/{spaces}',[SpaceController::class,'leave'])->name('space.leave');
-    Route::post('space/accede/{spaces}',[SpaceController::class,'accede'])->name('space.accede');
-    Route::post('space/destroy/{spaces}/{user}',[SpaceController::class,'destroy'])->name('space.destroy');
-
-    Route::get('velzon/confirm-member/{token}',[SendMailConfirmSpace::class,'acceptAccede'])->name('space.acceptAccede');
-
-
-    Route::post('space/addMember/{spaces}',[SendMailConfirmSpace::class,'sendMailConfirmMember'])->name('send.member');
+    Route::resource('khong-gian',SpaceController::class);
+    Route::prefix('khong-gian')->group(function () {
+        Route::post('/them-thanh-vien/{spaces}',[SpaceController::class,'accede'])->name('space.accede');
+        Route::post('/xoa-khong-gian/{spaces}/{user}',[SpaceController::class,'destroy'])->name('space.destroy');
+        Route::delete('/roi-khoi/{spaces}',[SpaceController::class,'leave'])->name('space.leave');
+    });
+    /* send email member space */
+    Route::post('space/moi-thanh-vien/{spaces}',[SendMailConfirmSpace::class,'validateSendMail'])->name('send.member');
+    Route::get('velzon/xac-nhan-tham-gia/{token}',[SendMailConfirmSpace::class,'acceptAccede'])->name('space.acceptAccede');
 
     /* Table Controller */
-    Route::resource('tables',TableController::class);
+    Route::resource('bang',TableController::class);
 });
 
 Route::get('/500', function () {

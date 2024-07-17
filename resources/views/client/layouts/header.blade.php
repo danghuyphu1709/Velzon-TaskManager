@@ -31,7 +31,7 @@
                             </button>
                             <ul class="dropdown-menu dropdown-menu-lg" aria-labelledby="dropdownMenuButton2" id="space_header">
                                 @foreach($spaces as $items)
-                                <li><a class="dropdown-item active" href="{{ route('tables.index',$items->code) }}">{{ $items->space_name }}</a></li>
+                                <li><a class="dropdown-item active" href="{{ route('khong-gian.index',$items->code) }}">{{ $items->space_name }}</a></li>
                                 @endforeach
                             </ul>
                         </div>

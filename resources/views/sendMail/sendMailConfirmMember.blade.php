@@ -23,7 +23,7 @@
                                     </tr>
                                     <tr style="font-family: 'Roboto', sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
                                         <td class="content-block" style="font-family: 'Roboto', sans-serif; color: #878a99; box-sizing: border-box; line-height: 1.5; font-size: 15px; vertical-align: top; margin: 0; padding: 0 0 10px;" valign="top">
-                                            Bạn vừa nhận được lời mời tham gia không gian làm việc trên Velzon của {{ \Illuminate\Support\Facades\Auth::user()->name }}
+                                            Bạn vừa nhận được lời mời tham gia không gian làm việc trên Velzon
                                         </td>
                                     </tr>
                                     <tr style="font-family: 'Roboto', sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
@@ -33,7 +33,7 @@
                                     </tr>
                                     <tr style="font-family: 'Roboto', sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
                                         <td class="content-block" itemprop="handler" itemscope itemtype="http://schema.org/HttpActionHandler" style="font-family: 'Roboto', sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 24px;" valign="top">
-                                            <a href="{{ route('space.acceptAccede', ['token' => $member->token]) }}?code={{ $member->space_code }}&email={{ urlencode($member->email_member) }}" itemprop="url" style="font-family: 'Roboto', sans-serif; box-sizing: border-box; font-size: .8125rem;font-weight: 400; color: #FFF; text-decoration: none; text-align: center; cursor: pointer; display: inline-block; border-radius: .25rem; text-transform: capitalize; background-color: #0ab39c; margin: 0; border-color: #0ab39c; border-style: solid; border-width: 1px; padding: .5rem .9rem;" onMouseOver="this.style.background='#099885'" onMouseOut="this.style.background='#0ab39c'"> Đi đến &#8594;</a>
+                                            <a href="{{ route('space.acceptAccede', ['token' => $event->member->token]) }}?code={{ $event->member->space_code }}&email={{ urlencode($event->member->email_member) }}" itemprop="url" style="font-family: 'Roboto', sans-serif; box-sizing: border-box; font-size: .8125rem;font-weight: 400; color: #FFF; text-decoration: none; text-align: center; cursor: pointer; display: inline-block; border-radius: .25rem; text-transform: capitalize; background-color: #0ab39c; margin: 0; border-color: #0ab39c; border-style: solid; border-width: 1px; padding: .5rem .9rem;" onMouseOver="this.style.background='#099885'" onMouseOut="this.style.background='#0ab39c'"> Đi đến &#8594;</a>
                                         </td>
                                     </tr>
 

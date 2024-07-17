@@ -22,7 +22,7 @@
                                             </div>
                                             <div class="col-md">
                                                 <div>
-                                                    <form action=" {{ route('spaces.update',$space->id) }}"
+                                                    <form action=" {{ route('khong-gian.update',$space->id) }}"
                                                           method="post" id="form-edit-space">
                                                         <div id="title_old" class="d-flex" style=" gap: 9px"><h4
                                                                 class="fw-bold mt-3">{{ $space->space_name }}</h4>
@@ -39,9 +39,9 @@
                                                         </div>
                                                     </form>
                                                     <div class="hstack gap-3 flex-wrap">
-                                                        <div><i class="ri-building-line align-bottom me-1"></i> {{ $space->AccessLevelSpace->access_name }}</div>
+                                                        <div><i class="ri-building-line align-bottom me-1"></i>{{ $space->AccessLevelSpace->access_name }}</div>
                                                         <div class="vr"></div>
-                                                        <div>Create Date : <span class="fw-medium">{{ $space->created_at }}</span></div>
+                                                        <div> Thời gian tạo  : <span class="fw-medium">{{ $space->created_at->diffForHumans(\Illuminate\Support\Carbon::now()) }}</span></div>
                                                         <div class="vr"></div>
                                                         <div class="vr"></div>
                                                         <div class="badge rounded-pill bg-info fs-12">New</div>
@@ -100,6 +100,7 @@
                                                 <div class="pt-3 border-top border-top-dashed mt-4">
                                                     <h6 class="mb-3 fw-semibold text-uppercase">Bảng</h6>
                                                         <div class="row">
+                                                            @if($auth != null)
                                                             @foreach($space->tables as $table)
                                                                 <div class="col-xxl-3 col-sm-6 project-card">
                                                                     <div class="card card-height-100">
@@ -107,22 +108,17 @@
                                                                             <div class="d-flex flex-column h-100">
                                                                                 <div class="d-flex">
                                                                                     <div class="flex-grow-1">
-                                                                                        <p class="text-muted mb-4">Updated 3hrs ago</p>
+                                                                                        <p class="text-muted mb-4">{{ $table->created_at->diffForHumans(\Illuminate\Support\Carbon::now()) }} </p>
                                                                                     </div>
                                                                                     <div class="flex-shrink-0">
                                                                                         <div class="d-flex gap-1 align-items-center">
-                                                                                            <button type="button" class="btn avatar-xs mt-n1 p-0 favourite-btn">
-                                                        <span class="avatar-title bg-transparent fs-15">
-                                                            <i class="ri-star-fill"></i>
-                                                        </span>
-                                                                                            </button>
                                                                                             <div class="dropdown">
                                                                                                 <button class="btn btn-link text-muted p-1 mt-n2 py-0 text-decoration-none fs-15" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                                                                                     <i data-feather="more-horizontal" class="icon-sm"></i>
                                                                                                 </button>
 
                                                                                                 <div class="dropdown-menu dropdown-menu-end">
-                                                                                                    <a class="dropdown-item" href="apps-projects-overview.html"><i class="ri-eye-fill align-bottom me-2 text-muted"></i> View</a>
+                                                                                                    <a class="dropdown-item" href="{{ route('bang.show',$table->code) }}"><i class="ri-eye-fill align-bottom me-2 text-muted"></i> View</a>
                                                                                                     <a class="dropdown-item" href="apps-projects-create.html"><i class="ri-pencil-fill align-bottom me-2 text-muted"></i> Edit</a>
                                                                                                     <div class="dropdown-divider"></div>
                                                                                                     <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#removeProjectModal"><i class="ri-delete-bin-fill align-bottom me-2 text-muted"></i> Remove</a>
@@ -131,19 +127,21 @@
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
+                                                                                <a href="{{ route('bang.show',$table->code) }}" class="text-body">
                                                                                 <div class="d-flex mb-2">
                                                                                     <div class="flex-shrink-0 me-3">
                                                                                         <div class="avatar-sm">
                                                     <span class="avatar-title bg-warning-subtle rounded p-2">
-                                                        <img src="assets/images/brands/slack.png" alt="" class="img-fluid p-1">
+                                                        <img src="{{ asset('default/assets/images/brands/slack.png')  }}" alt="" class="img-fluid p-1">
                                                     </span>
                                                                                         </div>
                                                                                     </div>
                                                                                     <div class="flex-grow-1">
-                                                                                        <h5 class="mb-1 fs-15"><a href="apps-projects-overview.html" class="text-body">{{ $table->title }}</a></h5>
+                                                                                        <h5 class="mb-1 fs-15">{{ $table->title }}</h5>
                                                                                         <p class="text-muted text-truncate-two-lines mb-3">{{ $table->description }}</p>
                                                                                     </div>
                                                                                 </div>
+                                                                                </a>
                                                                                 <div class="mt-auto">
                                                                                     <div class="d-flex mb-2">
                                                                                         <div class="flex-grow-1">
@@ -158,30 +156,25 @@
                                                                                     </div><!-- /.progress -->
                                                                                 </div>
                                                                             </div>
-
                                                                         </div>
+
                                                                         <!-- end card body -->
                                                                         <div class="card-footer bg-transparent border-top-dashed py-2">
                                                                             <div class="d-flex align-items-center">
                                                                                 <div class="flex-grow-1">
                                                                                     <div class="avatar-group">
+                                                                                        @foreach($space->users as $item)
                                                                                         <a href="javascript: void(0);" class="avatar-group-item" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Darline Williams">
                                                                                             <div class="avatar-xxs">
-                                                                                                <img src="assets/images/users/avatar-2.jpg" alt="" class="rounded-circle img-fluid">
+                                                                                                <img src="{{ $item->avatar }}" alt="" class="rounded-circle img-fluid">
                                                                                             </div>
                                                                                         </a>
-                                                                                        <a href="javascript: void(0);" class="avatar-group-item" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Add Members">
-                                                                                            <div class="avatar-xxs">
-                                                                                                <div class="avatar-title fs-16 rounded-circle bg-light border-dashed border text-primary">
-                                                                                                    +
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </a>
+                                                                                        @endforeach
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="flex-shrink-0">
                                                                                     <div class="text-muted">
-                                                                                        <i class="ri-calendar-event-fill me-1 align-bottom"></i> 10 Jul, 2021
+                                                                                        <i class="ri-calendar-event-fill me-1 align-bottom"></i> {{ $table->created_at->format('d M, Y') }}
                                                                                     </div>
                                                                                 </div>
 
@@ -193,6 +186,7 @@
                                                                     <!-- end card -->
                                                                 </div>
                                                             @endforeach
+                                                            @endif
                                                         </div>
                                                     <!-- end row -->
                                                 </div>
@@ -449,7 +443,7 @@
                     <button type="button" class="btn-close" id="addBoardBtn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action=" {{ route('spaces.update',$space->id) }} " method="post" id="updateBoardForm">
+                    <form action=" {{ route('khong-gian.update',$space->id) }} " method="post" id="updateBoardForm">
                         @method('PUT')
                         @csrf
                         <div class="row">
@@ -497,9 +491,9 @@
         <script src="{{ asset('default/vendor/delete.js') }}"></script>
     <script>
 
-        @if(session('error-alert'))
+        @if(session('alert-success'))
         Toastify({
-            text: @json(session('error-alert')),
+            text: @json(session('alert-success')),
             duration: 3000,
             newWindow: true,
             close: true,
@@ -508,6 +502,21 @@
             stopOnFocus: true, // Prevents dismissing of toast on hover
             style: {
                 background: "linear-gradient(to right, #00b09b, #96c93d)",
+            },
+        }).showToast();
+        @endif
+
+        @if(session('alert-error'))
+        Toastify({
+            text: @json(session('alert-error')),
+            duration: 3000,
+            newWindow: true,
+            close: true,
+            gravity: "top", // `top` or `bottom`
+            position: "center", // `left`, `center` or `right`
+            stopOnFocus: true, // Prevents dismissing of toast on hover
+            style: {
+                background: "linear-gradient(to right, #ff0000, #cc0000)",
             },
         }).showToast();
         @endif

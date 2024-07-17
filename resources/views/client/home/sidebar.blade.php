@@ -56,10 +56,7 @@
                         <div class="collapse menu-dropdown" id="sidebar{{$items->id}}">
                             <ul class="nav nav-sm flex-column">
                                 <li class="nav-item">
-                                    <a href="{{ route('spaces.show',$items->code) }}" class="nav-link" data-key="t-analytics"> Bảng </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link" data-key="t-crm"> Thành viên </a>
+                                    <a href="{{ route('khong-gian.show',$items->code) }}" class="nav-link" data-key="t-analytics"> Bảng </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="#" class="nav-link" data-key="t-ecommerce"> Cài đặt </a>
