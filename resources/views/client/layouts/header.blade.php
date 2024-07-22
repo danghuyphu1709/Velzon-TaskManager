@@ -24,43 +24,6 @@
                         <span></span>
                     </span>
                     </button>
-                    <div class="sidebar">
-                        <div class="dropdown">
-                            <button class="btn .btn-transparent dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
-                               Không gian làm việc
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-lg" aria-labelledby="dropdownMenuButton2" id="space_header">
-                                @foreach($spaces as $items)
-                                <li><a class="dropdown-item active" href="{{ route('khong-gian.index',$items->code) }}">{{ $items->space_name }}</a></li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="sidebar">
-                        <div class="dropdown">
-                            <button class="btn .btn-transparent dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
-                                Quan trọng
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-lg" aria-labelledby="dropdownMenuButton2">
-                                <li><a class="dropdown-item active" href="#">Action</a></li>
-                                <li><a class="dropdown-item" href="#">Another action</a></li>
-                                <li><a class="dropdown-item" href="#">Something else here</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="#">Separated link</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="sidebar">
-                        <div class="dropdown">
-                            <button class="btn btn-transparent dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="ri-add-fill" style="font-size: 30px"></i>
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-lg" aria-labelledby="dropdownMenuButton2">
-                                <li><h5 class="dropdown-item" data-bs-toggle="modal"  data-bs-target="#createboardModal"><i class="ri-add-line align-bottom me-1"></i> Tạo không gian </h5></li>
-                                <li><h5 class="dropdown-item" data-bs-toggle="modal"  data-bs-target="#createTableModal"><i class="ri-add-line align-bottom me-1"></i> Tạo bảng </h5></li>
-                            </ul>
-                        </div>
-                    </div>
 
                 </div>
 
@@ -442,6 +405,7 @@
                                     {{('Log Out')}}
                                 </x-dropdown-link>
                             </form>
+
                         </div>
                     </div>
                 </div>
@@ -449,6 +413,8 @@
         </div>
           {{--  modal space--}}
         <!--end add member modal-->
+
     </header>
+
 
 </div>

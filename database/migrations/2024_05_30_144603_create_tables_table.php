@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('tables', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(App\Models\Spaces::class)->constrained()->onDelete('cascade');
+            $table->foreignIdFor(App\Models\AccessLevelTables::class)->constrained();
             $table->string('code',25)->index();
             $table->string('description',1000)->nullable();
             $table->string('title',255);

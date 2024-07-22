@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 
@@ -17,15 +18,16 @@ class Tables extends Model
 
     public $timestamps = true;
 
-    public $fillable = ['code','access_level_table_id','spaces_id','title','description','important','created_at','updated_at'];
+    public $fillable = ['code','access_level_tables_id','title','description','important','created_at','updated_at'];
 
-    public function spaces()
+    public function users() :BelongsToMany
     {
-        return $this->belongsTo(Spaces::class);
+        return $this->belongsToMany(User::class,'table_users', 'tables_id', 'user_id')
+            ->withPivot('roles_id', 'is_created');
     }
 
-    public function users(): BelongsToMany
+    public function AccessLevelTables() : BelongsTo
     {
-        return $this->spaces->users();
+        return $this->belongsTo(AccessLevelTables::class);
     }
 }

@@ -23,17 +23,17 @@
                 <ul class="navbar-nav" id="navbar-nav">
                     <li class="menu-title"><span data-key="t-menu">Bảng</span></li>
                     <li class="nav-item">
-                        <a class="nav-link menu-link" href="widgets.html">
-                            <i class="ri-table-2"></i> <span data-key="t-widgets" style="font-size: 20px;margin-left: 10px">{{ $table->spaces->space_name }}</span>
+                        <a class="nav-link menu-link" href="">
+                            <i class="ri-table-2"></i> <span data-key="t-widgets" class="text-truncate-two-lines" style="font-size: 18px">{{ $table->title }}</span>
                         </a>
                     </li>
-                    <div class="collapse menu-dropdown show" id="sidebar{{$table->spaces->id}}">
+                    <div class="collapse menu-dropdown show" id="sidebar">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="{{ route('khong-gian.show',$table->spaces->code) }}" class="nav-link" data-key="t-analytics"> Bảng </a>
+                                <a href="{{ route('tables.index',$table->code ) }}" class="nav-link" data-key="t-analytics">Bảng</a>
                             </li>
                             <li class="nav-item">
-                                <a href="#" class="nav-link" data-key="t-ecommerce"> Cài đặt </a>
+                                <a href="{{ route('tables.show',$table->code ) }}" class="nav-link" data-key="t-ecommerce"> Cài đặt </a>
                             </li>
                         </ul>
                     </div>

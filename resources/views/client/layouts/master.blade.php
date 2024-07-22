@@ -42,6 +42,7 @@
 @include('client.layouts.header')
 <body>
 <main id="main" class="main">
+
     @yield('sidebar')
 
     @yield('content')
@@ -76,9 +77,9 @@
 
 <script src=" {{ asset('default/vendor/jquery/jquery.validate.min.js')}}"></script>
 
-<script src=" {{ asset('default/vendor/main.js') }}"></script>
-
 @yield('js')
+
+
 </body>
 
 </html>

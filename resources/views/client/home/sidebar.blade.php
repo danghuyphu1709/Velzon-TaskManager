@@ -32,7 +32,7 @@
                 <ul class="navbar-nav mt-1" id="navbar-nav">
                     <li class="nav-item">
                         <a class="nav-link menu-link" href="widgets.html">
-                            <i class="ri-palette-line"></i> <span data-key="t-widgets" style="font-size: 20px;margin-left: 10px"> Mẫu</span>
+                            <i class="ri-palette-line"></i> <span data-key="t-widgets" style="font-size: 20px;margin-left: 10px"> Quan trọng</span>
                         </a>
                     </li>
                 </ul>
@@ -47,19 +47,22 @@
 
                 <hr>
                 <ul class="navbar-nav mt-4" id="space_sidebar">
-                    <li class="menu-title"><span data-key="t-menu">Không gian làm việc</span></li>
-                    @foreach($spaces as $items)
+                    <li class="menu-title"><span data-key="t-menu">Bảng làm việc</span></li>
+                   @foreach($user->tables as $item)
                     <li class="nav-item">
-                        <a class="nav-link menu-link" href="#sidebar{{ $items->id }}" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
-                            <i class="ri-table-2"></i><span data-key="t-dashboards"> {{ $items->space_name }}</span>
+                        <a class="nav-link menu-link" href="#table{{$item->code}}" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
+                            <i class="ri-table-2"></i><span data-key="t-dashboards"> {{ $item->title }} </span>
                         </a>
-                        <div class="collapse menu-dropdown" id="sidebar{{$items->id}}">
+                        <div class="collapse menu-dropdown" id="table{{$item->code}}">
                             <ul class="nav nav-sm flex-column">
                                 <li class="nav-item">
-                                    <a href="{{ route('khong-gian.show',$items->code) }}" class="nav-link" data-key="t-analytics"> Bảng </a>
+                                    <a href="{{ route('tables.index',$item->code ) }}" class="nav-link" data-key="t-analytics"> Bảng </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link" data-key="t-ecommerce"> Cài đặt </a>
+                                    <a href="{{ route('tables.show',$item->code ) }}" class="nav-link" data-key="t-ecommerce"> Cài đặt </a>
+                                </li>
+                                <li class="nav-item">
+                                   <hr>
                                 </li>
                             </ul>
                         </div>
@@ -69,7 +72,6 @@
             </div>
             <!-- Sidebar -->
         </div>
-
         <div class="sidebar-background"></div>
     </div>
 @endsection

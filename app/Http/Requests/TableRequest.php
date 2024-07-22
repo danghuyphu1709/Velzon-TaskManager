@@ -24,17 +24,15 @@ class TableRequest extends FormRequest
     {
         $rule = [
             'title' => 'required|string',
-            'spaces_id' => 'required|exists:access_level_spaces,id',
+            'access_level_tables_id' => 'required',
             'description' => 'nullable|string',
         ];
         return $rule;
     }
-
     protected function failedValidation(Validator $validator)
     {
         // Lưu thông tin lỗi vào session
         session()->flash('alert-error', $validator->errors()->first());
-
         throw new HttpResponseException(redirect()->back()->withErrors($validator)->withInput());
     }
 }

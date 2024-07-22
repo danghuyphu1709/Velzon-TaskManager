@@ -23,13 +23,6 @@ class ViewServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        View::composer('*', function ($view) {
-           if(Auth::user()){
-               $accessLevelSpaces = AccessLevelSpace::all();
-               $spaces = User::find(Auth::user()->id)->Spaces()->get();
-               View::share('accessLevel', $accessLevelSpaces);
-               View::share('spaces', $spaces);
-           }
-        });
+
     }
 }

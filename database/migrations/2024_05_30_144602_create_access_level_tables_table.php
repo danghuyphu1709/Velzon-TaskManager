@@ -11,12 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('spaces', function (Blueprint $table) {
+        Schema::create('access_level_tables', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(App\Models\AccessLevelSpace::class)->constrained();
-            $table->string('code',25)->index();
-            $table->string('space_name',255);
-            $table->string('space_description',1000)->nullable();
+            $table->string('access_name');
             $table->timestamps();
         });
     }
@@ -26,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('spaces');
+        Schema::dropIfExists('access_level_tables');
     }
 };
