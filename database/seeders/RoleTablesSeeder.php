@@ -6,16 +6,16 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class AccessLevelSpaceSeeder extends Seeder
+class RoleTablesSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        DB::table('access_level_spaces')->insert([
-            ['id' => 1,'access_name' => 'public'],
-            ['id' => 2,'access_name' => 'private'],
+        DB::table('roles')->insert([
+            ['id' => 1,'role_name' => 'Quản trị viên'],
+            ['id' => 2,'role_name' => 'Thành viên'],
         ]);
     }
 }

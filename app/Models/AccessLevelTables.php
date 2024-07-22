@@ -4,20 +4,19 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use mysql_xdevapi\Table;
 
-class AccessLevelSpace extends Model
+class AccessLevelTables extends Model
 {
     use HasFactory;
-
-    protected $table = 'access_level_spaces';
-
-    protected $primaryKey = 'id';
 
     public $timestamps = false;
 
     public $fillable = ['access_name'];
-    public function space()
+
+    public function tables() :HasMany
     {
-        return $this->hasMany(Spaces::class);
+        return $this->hasMany(Tables::class);
     }
 }

@@ -3,7 +3,6 @@
 namespace App\Http\Repositories\Repository;
 use App\Http\Repositories\BaseRepository;
 use App\Models\Tables;
-use App\Models\SpaceUser;
 
 class TableRepository extends BaseRepository
 {

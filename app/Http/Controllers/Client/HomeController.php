@@ -3,21 +3,25 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
-use App\Http\Repositories\Repository\SpaceRepository;
-use App\Models\AccessLevelSpace;
+
+use App\Http\Repositories\Repository\TableUserRepository;
+use App\Models\AccessLevelTables;
+use App\Models\Tables;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
-    public $spaceRepository;
-    public function __construct(SpaceRepository $spaceRepository)
+    protected $tableRepository;
+    public function __construct(TableUserRepository $tableRepository)
     {
-      $this->spaceRepository = $spaceRepository;
+        $this->tableRepository = $tableRepository;
     }
+
     public function index()
     {
-         $tables = User::find(Auth::user()->id)->spaces()->with('tables')->get();
-         return view('client.home',compact(['tables']));
+         $user = Auth::user()->load('tables','tables.users');
+         $accessLevel = AccessLevelTables::query()->get();
+         return view('client.home',compact(['user','accessLevel']));
     }
 }

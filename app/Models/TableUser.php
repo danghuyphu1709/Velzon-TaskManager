@@ -6,15 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class SpaceUser extends Model
+class TableUser extends Model
 {
     use HasFactory;
 
-    protected $table = 'space_users';
-
     public $timestamps = false;
 
-    public $fillable = ['spaces_id','user_id','role_space_id','is_created'];
-
+    public $fillable = ['tables_id','user_id','roles_id','is_created'];
 
 }

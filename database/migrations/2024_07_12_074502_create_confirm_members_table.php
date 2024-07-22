@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('confirm_members', function (Blueprint $table) {
             $table->id();
             $table->string('token',255);
-            $table->string('space_code',255);
+            $table->string('table_code',255);
             $table->string('email_member',255);
             $table->timestamps();
         });
