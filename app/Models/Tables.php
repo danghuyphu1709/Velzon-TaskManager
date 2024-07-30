@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 
 class Tables extends Model
@@ -29,5 +30,10 @@ class Tables extends Model
     public function AccessLevelTables() : BelongsTo
     {
         return $this->belongsTo(AccessLevelTables::class);
+    }
+
+    public function ListTask() :HasMany
+    {
+      return $this->hasMany(ListTask::class);
     }
 }

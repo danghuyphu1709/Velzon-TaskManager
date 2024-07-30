@@ -15,9 +15,10 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(App\Models\ListTask::class)->constrained()->onDelete('cascade');
             $table->string('task_name',255);
-            $table->string('task_image',255);
-            $table->string('task_description',1000);
-            $table->tinyInteger('priority')->default(0);
+            $table->string('task_image',255)->nullable();
+            $table->string('task_description',1000)->nullable();
+            $table->timestamp('due_date')->nullable();
+            $table->timestamp('start_date')->nullable();
             $table->tinyInteger('status')->default(1);
             $table->timestamps();
         });

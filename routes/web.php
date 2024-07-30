@@ -7,6 +7,7 @@ use \App\Http\Controllers\LoginGoogleController;
 use App\Http\Controllers\Client\HomeController;
 //use App\Http\Controllers\Client\SpaceController;
 use \App\Http\Controllers\Client\TableController;
+use \App\Http\Controllers\Client\ListTaskController;
 use \App\Http\Services\SendMailConfirmSpace;
 /*
 |--------------------------------------------------------------------------
@@ -45,20 +46,29 @@ Route::middleware('auth')->group(function () {
     Route::get('velzon/xac-nhan-tham-gia/{token}',[SendMailConfirmSpace::class,'acceptAccede'])->name('space.acceptAccede');
 
     /* Table Controller */
-    Route::prefix('bang')->group(function () {
-        Route::get('/{tables}',[TableController::class,'index'])->name('tables.index');
+    Route::prefix('bang/')->group(function () {
+        Route::get('{tables}',[TableController::class,'index'])->name('tables.index');
 
-        Route::post('/tao-bang',[TableController::class,'store'])->name('tables.store');
+        Route::post('tao-bang',[TableController::class,'store'])->name('tables.store');
 
-        Route::put('/sua-bang/{tables}',[TableController::class,'update'])->name('tables.update');
+        Route::put('sua-bang/{tables}',[TableController::class,'update'])->name('tables.update');
 
-        Route::get('/thong-tin/{tables}',[TableController::class,'show'])->name('tables.show');
+        Route::get('thong-tin/{tables}',[TableController::class,'show'])->name('tables.show');
 
-        Route::post('/them-thanh-vien',[TableController::class,'accede'])->name('tables.accede');
+        Route::post('them-thanh-vien/{tables}',[TableController::class,'accede'])->name('tables.accede');
 
-        Route::post('/xoa-khong-gian/{table}/{user}',[TableController::class,'destroy'])->name('tables.destroy');
+        Route::post('xoa-khong-gian/{tables}/{user}',[TableController::class,'destroy'])->name('tables.destroy');
 
-        Route::delete('/roi-khoi/{tables}',[TableController::class,'leave'])->name('tables.leave');
+        Route::delete('roi-khoi/{tables}',[TableController::class,'leave'])->name('tables.leave');
+    });
+
+    Route::prefix('nhiem-vu/')->group(function () {
+
+        Route::post('them/{tables}',[ListTaskController::class,'store'])->name('taskList.store');
+
+        Route::put('sua/{listTask}',[ListTaskController::class,'update'])->name('taskList.update');
+
+        Route::delete('xoa/{listTask}',[ListTaskController::class,'destroy'])->name('taskList.destroy');
     });
 });
 

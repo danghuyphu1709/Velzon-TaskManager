@@ -41,7 +41,25 @@
                 <hr>
                 <ul class="navbar-nav mt-4" id="space_sidebar">
                     <li class="menu-title"><span data-key="t-menu">Nhiệm vụ</span></li>
-
+                    @foreach($table->ListTask as $item)
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" href="#table{{$item->id}}" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
+                                <i class="ri-table-2"></i><span class="text-truncate-two-lines" data-key="t-dashboards"> {{ $item->title }} </span>
+                            </a>
+                            <div class="collapse menu-dropdown" id="table{{$item->id}}">
+                                <ul class="nav nav-sm flex-column">
+                                    @foreach($item->task as $task)
+                                    <li class="nav-item">
+                                        <a href="{{ route('tables.index',$item->code ) }}" class="nav-link" data-key="t-analytics"> Bảng </a>
+                                    </li>
+                                    @endforeach
+                                    <li class="nav-item">
+                                        <hr>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                    @endforeach
                 </ul>
             </div>
             <!-- Sidebar -->

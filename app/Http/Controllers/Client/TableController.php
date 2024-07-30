@@ -10,9 +10,12 @@ use App\Http\Repositories\Repository\TableUserRepository;
 use App\Http\Requests\TableRequest;
 use App\Models\AccessLevelTables;
 use App\Models\Tables;
+use App\Models\TableUser;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Mockery\Exception;
 
 class TableController extends Controller
@@ -30,7 +33,7 @@ class TableController extends Controller
      */
     public function index(string $code)
     {
-        $table = Tables::query()->with(['users','AccessLevelTables'])->where('code',$code)->first();
+        $table = Tables::query()->with(['users','AccessLevelTables','ListTask','ListTask.Task'])->where('code',$code)->first();
 
         if(!empty($table)){
             $auth = $table->users->where('id',Auth::user()->id)->first();
@@ -70,6 +73,7 @@ class TableController extends Controller
     public function show(string $code)
     {
         $table = Tables::query()->with(['users','AccessLevelTables'])->where('code',$code)->first();
+
         if(!empty($table)){
             $auth = $table->users->where('id',Auth::user()->id)->first();
             $accessLevel = AccessLevelTables::query()->get();
@@ -92,38 +96,65 @@ class TableController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(TableRequest $request, string $id)
     {
-        //
+        $table = $request->validated();
+        try {
+            $tableCreated = $this->tableRepository->update($id,$table);
+            return redirect()->back();
+        }catch (Exception $exception){
+            DB::rollBack();
+            session()->flash('error', 'Lỗi hệ thống, vui lòng gửi lại sau');
+            return back();
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Tables $tables,User $user)
     {
-        //
+        $spaces_user = TableUser::query()->where('tables_id', $tables->id)
+            ->where('user_id', $user->id);
+        if ($spaces_user->first() != null) {
+            $spaces_user->delete();
+            return redirect()->route('tables.show',$tables->code);
+        } else {
+            session()->flash('error', 'Lỗi hệ thống, vui lòng gửi lại sau');
+            return redirect()->back();
+        }
     }
 
-    public function leave()
+    public function leave(Tables $tables)
     {
-
+        $spaces_user = TableUser::query()->where('tables_id', $tables->id)
+            ->where('user_id', Auth::user()->id);
+        if ($spaces_user->first() != null) {
+            $created = $spaces_user->first();
+            $spaces_user->delete();
+            if($created->is_created){
+                $tables->delete();
+                return redirect()->route('home');
+            }
+            return redirect()->route('home');
+        } else {
+            session()->flash('error', 'Lỗi hệ thống, vui lòng gửi lại sau');
+            return redirect()->back();
+        }
     }
 
-    public function accede(Request $request)
+    public function accede(Tables $tables)
     {
-        dd($request);
-
-//        try {
-//            $this->tableUserRepository->create([
-//                'tables_id' => $tables->id,
-//                'user_id' => $request->user_id,
-//            ]);
-//            return redirect()->route('bang.show', $tables->code);
-//        }catch(\PHPUnit\Event\Exception $exception){
-//            Log::debug($exception);
-//            session()->flash('error', 'Lỗi hệ thống, vui lòng gửi lại sau');
-//            return redirect()->back();
-//        }
+        try {
+            $this->tableUserRepository->create([
+                'tables_id' => $tables->id,
+                'user_id' => Auth::user()->id,
+                'roles_id' => UserHasRole::member->value,
+            ]);
+            return redirect()->route('tables.show', $tables->code);
+        }catch(\PHPUnit\Event\Exception $exception){
+            session()->flash('error', 'Lỗi hệ thống, vui lòng gửi lại sau');
+            return redirect()->back();
+        }
     }
 }

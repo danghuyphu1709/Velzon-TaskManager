@@ -15468,8 +15468,8 @@ span.flatpickr-weekday {
   display: flex;
   overflow-x: auto;
   -webkit-box-align: stretch;
-      -ms-flex-align: stretch;
-          align-items: stretch;
+  -ms-flex-align: stretch;
+  align-items: stretch;
 }
 .tasks-board .tasks-list {
   min-width: 300px;
