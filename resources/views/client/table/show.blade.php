@@ -27,7 +27,7 @@
                                                               method="post" id="form-edit-space">
                                                             <div class="d-flex" style=" gap: 9px"><h4
                                                                     class="fw-bold mt-3">{{ $table->title }}</h4>
-                                                                    @if(isset($auth) && $auth->pivot->role_space_id == \App\Enums\UserHasRole::admin->value)
+                                                                    @if(isset($auth) && $auth->pivot->roles_id == \App\Enums\UserHasRole::admin->value)
                                                                         <button data-bs-toggle="modal"
                                                                                 data-bs-target="#updateBoardModal"
                                                                                 class="btn" type="button"
@@ -150,7 +150,7 @@
                                                                 </div>
                                                                 <div class="flex-shrink-0">
                                                                     <div class="d-flex align-items-center gap-1">
-                                                                        @if($item->pivot->role_space_id == 1)
+                                                                        @if($item->pivot->roles_id == 1)
                                                                             <button type="button"
                                                                                     class="btn btn-light btn-sm">Quản
                                                                                 trị viên
@@ -182,24 +182,6 @@
                                 <!-- end row -->
                             </div>
                             <div class="tab-pane fade" id="project-team" role="tabpanel">
-                                <div class="row g-4 mb-3">
-                                    <div class="col-sm">
-                                        <div class="d-flex">
-                                            <div class="search-box me-2">
-                                                <input type="text" class="form-control" placeholder="Search member...">
-                                                <i class="ri-search-line search-icon"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-auto">
-                                        <div>
-                                            <button type="button" class="btn btn-danger" data-bs-toggle="modal"
-                                                    data-bs-target="#addMemberModal"><i
-                                                    class="ri-share-line me-1 align-bottom"></i> Invite Member
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
                                 <!-- end row -->
                                 <div class="team-list list-view-filter">
                                     @foreach ($table->users as $item)
@@ -271,15 +253,14 @@
                                                                             </li>
                                                                         @endif
                                                                         <form
-                                                                            action="{{ route('tables.destroy',['table' => $table->code, 'user' => $item->id]) }}"
+                                                                            action="{{ route('tables.destroy',['tables' => $table, 'user' => $item]) }}"
                                                                             method="post" class="deleteUserSpace">
                                                                             @csrf
                                                                             @method('POST')
                                                                             <li>
                                                                                 <button class="dropdown-item"
                                                                                         type="submit"><i
-                                                                                        class="ri-delete-bin-5-fill text-muted me-2 align-bottom"></i>Xóa
-                                                                                </button>
+                                                                                        class="ri-delete-bin-5-fill text-muted me-2 align-bottom"></i>Xóa</button>
                                                                             </li>
                                                                         </form>
                                                                     </ul>
@@ -689,7 +670,7 @@
                                     <h4>Rời khỏi không gian làm việc!</h4>
                                     <p class="text-muted"> bạn có muốn rời khỏi không gian làm việc này ? </p>
                                     <!-- Toogle to second dialog -->
-                                    <form action="{{ route('tables.leave', $table) }}" method="post">
+                                    <form action="{{ route('tables.leave', $table,Auth::user()->id) }}" method="post">
                                         @csrf
                                         @method('DELETE')
                                         <button class="btn btn-warning" type="submit">Rời khỏi</button>
@@ -745,26 +726,21 @@
                             <div class="row">
                                 <div class="col-lg-12">
                                     <label for="boardName" class="form-label">Tên không gian</label>
-                                    <input type="text" class="form-control" name="table"
+                                    <input type="text" class="form-control" name="title"
                                            value="{{ $table->title }}">
                                 </div>
                                 <div class="col-lg-12 mt-3">
                                     <label for="boardName" class="form-label ">Quyền xem</label>
-                                    <select class="form-control" name="access_level_space_id">
+                                    <select class="form-control" name="access_level_tables_id">
                                         @foreach($accessLevel as $item)
-                                            @if($table->access_level_table_id == $item->id)
-                                                <option value="{{ $item->id }}"
-                                                        selected> {{ $item->access_name }}</option>
-                                            @else
-                                                <option value="{{ $item->id }}"> {{ $item->access_name }}</option>
-                                            @endif
+                                            <option value="{{ $item->id }}" {{ $table->access_level_tables_id == $item->id ? 'selected' : '' }}> {{ $item->access_name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
                                 <div class="col-lg-12 mt-3">
                                     <label for="boardName" class="form-label">Mô tả</label>
                                     <textarea class="form-control"
-                                              name="space_description">{{ $table->description }}</textarea>
+                                              name="description">{{ $table->description }}</textarea>
                                 </div>
 
                                 <div class="mt-4">
@@ -787,7 +763,7 @@
         @endif
         @endsection
         @section('js')
-            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+            <script src="{{ asset('default/vendor/jquery/sweetalert2.main.js') }}"></script>
             <script src="{{ asset('default/vendor/delete.js') }}"></script>
             <script>
                 @if(session('alert-success'))
@@ -842,31 +818,32 @@
                         },
                         submitHandler: function (form) {
                             form.submit();
+                            form.reset()
                         }
                     });
                     formUpdate.validate({
                         rules: {
-                            space_name: {
+                            title: {
                                 required: true,
                                 minlength: 3,
                                 maxlength: 255
                             },
-                            access_level_space_id: {
+                            access_level_tables_id: {
                                 required: true,
                                 min: 1
                             },
-                            space_description: {
+                            description: {
                                 maxlength: 1000
                             }
                         },
                         messages: {
-                            space_name: {
+                            title: {
                                 required: "Vui lòng nhập trường này !",
-                                minlength: "Tên không gian quá ngắn !",
-                                maxlength: "Tên không gian quá dài !",
+                                minlength: "Tên bảng quá ngắn !",
+                                maxlength: "Tên bảng quá quá dài !",
                             },
-                            access_level_space_id: "Vui lòng  chọn trường này !",
-                            space_description: 'Mô tả không gian quá dài !'
+                            access_level_tables_id: "Vui lòng  chọn trường này !",
+                            description: 'Mô tả không gian quá dài !'
                         },
                         submitHandler: function (form) {
                             form.submit();

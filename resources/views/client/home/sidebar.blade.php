@@ -51,7 +51,7 @@
                    @foreach($user->tables as $item)
                     <li class="nav-item">
                         <a class="nav-link menu-link" href="#table{{$item->code}}" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
-                            <i class="ri-table-2"></i><span data-key="t-dashboards"> {{ $item->title }} </span>
+                            <i class="ri-table-2"></i><span class="text-truncate-two-lines" data-key="t-dashboards"> {{ $item->title }} </span>
                         </a>
                         <div class="collapse menu-dropdown" id="table{{$item->code}}">
                             <ul class="nav nav-sm flex-column">

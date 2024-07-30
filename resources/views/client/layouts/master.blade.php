@@ -51,6 +51,8 @@
 
     @include('client.layouts.footer')
 </main>
+
+
 <!-- JAVASCRIPT -->
 <script src=" {{ asset('default/assets/libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 <script src=" {{ asset('default/assets/libs/simplebar/simplebar.min.js') }}"></script>
@@ -76,6 +78,7 @@
 <script src=" {{ asset('default/vendor/jquery/jquery.main.js')}}"></script>
 
 <script src=" {{ asset('default/vendor/jquery/jquery.validate.min.js')}}"></script>
+
 
 @yield('js')
 

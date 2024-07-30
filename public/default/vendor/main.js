@@ -21,16 +21,14 @@ $(document).ready(function() {
         messages: {
             title: {
                 required: "Vui lòng nhập trường này !",
-                minlength: "Tên không gian quá ngắn !",
-                maxlength: "Tên không gian quá dài !",
+                minlength: "Tên bảng quá ngắn !",
+                maxlength: "Tên bảng quá quá dài !",
             },
             access_level_tables_id : "Vui lòng  chọn trường này !",
             description : 'Mô tả không gian quá dài !'
         },
         submitHandler: function(form) {
             form.submit();
-
-            form.reset();
         }
     });
 

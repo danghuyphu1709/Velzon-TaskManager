@@ -10,7 +10,6 @@ function actionDelete(e) {
         confirmButtonText: "Yes !",
     }).then((result) => {
         if (result.isConfirmed) {
-            console.log($(this))
             $(this).submit();
         }
     });
@@ -62,12 +61,35 @@ function restoreDelete(e) {
         }
     });
 }
+
+
+function actionDeleteTable(e) {
+    e.preventDefault();
+    Swal.fire({
+        title: "Xóa nhiệm vụ ?",
+        text: "Bạn có muốn xóa nhiệm vụ này !",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes !",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $(this).submit();
+        }
+    });
+}
 $(function () {
     // delete
     $(document).on("click", ".deleteUserSpace", actionDelete);
 
     $(document).on("click", ".deleteFlashSale", actionDelete);
 
+    //deleteTaskList
+    $(document).on("click", ".deleteTaskList", actionDeleteTable);
+
     //restore
     $(document).on("click", ".restoreVouchers", restoreDelete);
+
+
 });
