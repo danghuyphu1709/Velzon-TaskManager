@@ -14,12 +14,13 @@ return new class extends Migration
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(App\Models\ListTask::class)->constrained()->onDelete('cascade');
+            $table->string('code',255)->index();
             $table->string('task_name',255);
             $table->string('task_image',255)->nullable();
             $table->string('task_description',1000)->nullable();
             $table->timestamp('due_date')->nullable();
             $table->timestamp('start_date')->nullable();
-            $table->tinyInteger('status')->default(1);
+            $table->tinyInteger('status')->default(0);
             $table->timestamps();
         });
     }

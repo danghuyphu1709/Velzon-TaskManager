@@ -50,8 +50,8 @@
     @yield('modal')
 
     @include('client.layouts.footer')
-</main>
 
+</main>
 
 <!-- JAVASCRIPT -->
 <script src=" {{ asset('default/assets/libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
@@ -72,17 +72,17 @@
 <!-- notifications init -->
 <script src="{{ asset('default/vendor/toastify-js/toastify.main.js') }}"></script>
 
-<!-- App js -->
-<script src=" {{ asset('default/assets/js/app.js') }}"></script>
-
 <script src=" {{ asset('default/vendor/jquery/jquery.main.js')}}"></script>
 
 <script src=" {{ asset('default/vendor/jquery/jquery.validate.min.js')}}"></script>
 
+@vite(['resources/js/app.js']);
 
 @yield('js')
 
 
+<!-- App js -->
+<script src=" {{ asset('default/assets/js/app.js') }}"></script>
 </body>
 
 </html>

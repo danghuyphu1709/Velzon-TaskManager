@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -17,9 +18,9 @@ class ListTask extends Model
 
     public $fillable = ['tables_id','title','status','created_at','updated_at'];
 
-    public function Tables() :BelongsToMany
+    public function Tables() :BelongsTo
     {
-        return $this->belongsToMany(Tables::class );
+        return $this->belongsTo(Tables::class );
     }
 
     public function Task() :HasMany

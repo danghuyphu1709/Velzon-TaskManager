@@ -15,52 +15,40 @@ function actionDelete(e) {
     });
 }
 
-function restoreDelete(e) {
+function actionAddRoles(e) {
     e.preventDefault();
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    Swal.fire({
+        title: "Thêm quyền cho thành viên ?",
+        text: "Bạn có muốn thêm quyền thành viên này !",
+        icon: "success",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes !",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $(this).submit();
         }
     });
-    let urlRequest = $(this).data("url");
-    console.log(urlRequest);
-    let that = $(this);
+}
+
+function actionDeleteRoles(e) {
+    e.preventDefault();
     Swal.fire({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
+        title: "Xóa quyền cho thành viên ?",
+        text: "Bạn có muốn xóa quyền thành viên này !",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, restore it!",
+        confirmButtonText: "Yes !",
     }).then((result) => {
         if (result.isConfirmed) {
-            $.ajax({
-                type: "POST",
-                url: urlRequest,
-                success: function (data) {
-                    if (data == true) {
-                        that.parent().parent().parent().remove();
-                        Swal.fire({
-                            title: "Restore!",
-                            text: "Your file has been Restore.",
-                            icon: "success",
-                        });
-                    }
-                },
-                error: function (data) {
-                    if (data == false) {
-                        Swal.fire({
-                            title: "Cancelled",
-                            text: "Your imaginary file is safe :)",
-                            icon: "error",
-                        });
-                    }
-                },
-            });
+            $(this).submit();
         }
     });
 }
+
 
 
 function actionDeleteTable(e) {
@@ -88,8 +76,9 @@ $(function () {
     //deleteTaskList
     $(document).on("click", ".deleteTaskList", actionDeleteTable);
 
-    //restore
-    $(document).on("click", ".restoreVouchers", restoreDelete);
+    // add role
+    $(document).on("click",".addUserRoleTables", actionAddRoles);
 
-
+    // delete role
+    $(document).on("click",".deleteUserRoleTables", actionDeleteRoles);
 });

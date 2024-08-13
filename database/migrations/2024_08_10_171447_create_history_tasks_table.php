@@ -11,10 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('activity_history_tables', function (Blueprint $table) {
+        Schema::create('history_tasks', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(App\Models\Tables::class)->constrained()->onDelete('cascade');
-            $table->string('content',255);
+            $table->string('type');
+            $table->foreignIdFor(App\Models\Task::class)->constrained();
+            $table->text('data');
             $table->timestamps();
         });
     }
@@ -24,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('activity_history_tables');
+        Schema::dropIfExists('history_tasks');
     }
 };

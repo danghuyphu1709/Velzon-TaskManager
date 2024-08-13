@@ -76,20 +76,6 @@
                                             </a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link fw-semibold" data-bs-toggle="tab"
-                                               href="#project-activities" role="tab">
-                                                 Hoạt Động
-                                            </a>
-                                        </li>
-
-                                        <li class="nav-item">
-                                            <a class="nav-link fw-semibold" data-bs-toggle="tab"
-                                               href="#project-documents" role="tab">
-                                                Tải lên
-                                            </a>
-                                        </li>
-
-                                        <li class="nav-item">
                                                 @if(isset($auth) && $auth->pivot->roles_id == \App\Enums\UserHasRole::admin->value)
                                                     <a class="nav-link fw-semibold" data-bs-toggle="tab"
                                                        href="#project-team" role="tab">
@@ -122,9 +108,6 @@
                                             </div>
                                             <!-- end card body -->
                                         </div>
-                                        <!-- end card -->
-
-                                        <!-- end card -->
                                     </div>
                                     <!-- ene col -->
                                     <div class="col-xl-3 col-lg-4">
@@ -177,7 +160,7 @@
                                         <!-- end card -->
 
                                     </div>
-                                    <!-- end col -->
+
                                 </div>
                                 <!-- end row -->
                             </div>
@@ -185,7 +168,7 @@
                                 <!-- end row -->
                                 <div class="team-list list-view-filter">
                                     @foreach ($table->users as $item)
-                                        @if($item->id === Auth::user()->id)
+                                        @if($item->pivot->is_created)
                                             <div class="card team-box" id="card_items">
                                                 <div class="card-body px-4">
                                                     <div class="row align-items-center team-row">
@@ -207,15 +190,9 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    @if($item->pivot->roles_id == 1)
-                                                        <button type="button" class="btn btn-light btn-sm mt-3">Quản
-                                                            trị viên(Bạn)
-                                                        </button>
-                                                    @else
-                                                        <button type="button" class="btn btn-light btn-sm mt-3">Thành
-                                                            viên(Bạn)
-                                                        </button>
-                                                    @endif
+                                                <button type="button" class="btn btn-light btn-sm mt-3">
+                                                    Người tạo dự án
+                                                </button>
                                                 </div>
                                             </div>
                                         @else
@@ -235,34 +212,55 @@
                                                                         <i class="ri-more-fill fs-17"></i>
                                                                     </a>
                                                                     <ul class="dropdown-menu dropdown-menu-end">
-                                                                        @if($item->pivot->role_space_id == 1)
+                                                                        @if($item->pivot->roles_id == 1)
                                                                             <li>
-                                                                                <button class="dropdown-item"
-                                                                                        href="javascript:void(0);"><i
-                                                                                        class="ri-star-fill text-muted me-2 align-bottom"></i>Xóa
-                                                                                    quản trị viên
-                                                                                </button>
+                                                                                <form
+                                                                                    action="{{ route('tables.delete_admin',['tables' => $table, 'user' => $item]) }}"
+                                                                                    method="post" class="deleteUserRoleTables">
+                                                                                    @csrf
+                                                                                    @method('POST')
+                                                                                    <li>
+                                                                                        <button class="dropdown-item"
+                                                                                                href="javascript:void(0);"><i
+                                                                                                class="ri-star-fill text-muted me-2 align-bottom"></i>Xóa quản trị viên
+                                                                                        </button>
+                                                                                    </li>
+                                                                                </form>
                                                                             </li>
                                                                         @else
                                                                             <li>
-                                                                                <button class="dropdown-item"
-                                                                                        href="javascript:void(0);"><i
-                                                                                        class="ri-star-fill text-muted me-2 align-bottom"></i>Thêm
-                                                                                    quản trị viên
-                                                                                </button>
+                                                                                <form
+                                                                                    action="{{ route('tables.add_admin',['tables' => $table, 'user' => $item]) }}"
+                                                                                    method="post" class="addUserRoleTables">
+                                                                                    @csrf
+                                                                                    @method('POST')
+                                                                                    <li>
+                                                                                        <button class="dropdown-item"
+                                                                                                href="javascript:void(0);"><i
+                                                                                                class="ri-star-fill text-muted me-2 align-bottom"></i>Thêm quản trị viên
+                                                                                        </button>
+                                                                                    </li>
+                                                                                </form>
                                                                             </li>
                                                                         @endif
-                                                                        <form
-                                                                            action="{{ route('tables.destroy',['tables' => $table, 'user' => $item]) }}"
-                                                                            method="post" class="deleteUserSpace">
-                                                                            @csrf
-                                                                            @method('POST')
-                                                                            <li>
-                                                                                <button class="dropdown-item"
-                                                                                        type="submit"><i
-                                                                                        class="ri-delete-bin-5-fill text-muted me-2 align-bottom"></i>Xóa</button>
-                                                                            </li>
-                                                                        </form>
+                                                                        @if($item->id == Auth::user()->id)
+                                                                                <li>
+                                                                                    <button class="dropdown-item"  data-bs-toggle="modal" data-bs-target="#leaveModal"><i
+                                                                                            class="ri-delete-bin-5-fill text-muted me-2 align-bottom"></i>Rời đi</button>
+                                                                                </li>
+                                                                            @else
+                                                                                <form
+                                                                                    action="{{ route('tables.destroy',['tables' => $table, 'user' => $item]) }}"
+                                                                                    method="post" class="deleteUserSpace">
+                                                                                    @csrf
+                                                                                    @method('POST')
+                                                                                    <li>
+                                                                                        <button class="dropdown-item"
+                                                                                                type="submit"><i
+                                                                                                class="ri-delete-bin-5-fill text-muted me-2 align-bottom"></i>Xóa</button>
+                                                                                    </li>
+                                                                                </form>
+                                                                        @endif
                                                                     </ul>
                                                                 </div>
                                                             </div>
@@ -282,7 +280,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    @if($item->pivot->role_space_id == 1)
+                                                    @if($item->pivot->roles_id == 1)
                                                         <button type="button" class="btn btn-light btn-sm mt-3">Quản
                                                             trị viên
                                                         </button>
@@ -294,361 +292,9 @@
                                                 </div>
                                             </div>
                                         @endif
+
                                     @endforeach
                                 </div>
-                            </div>
-                            <div class="tab-pane fade" id="project-documents" role="tabpanel">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="d-flex align-items-center mb-4">
-                                            <h5 class="card-title flex-grow-1">Documents</h5>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-lg-12">
-                                                <div class="table-responsive table-card">
-                                                    <table class="table table-borderless align-middle mb-0">
-                                                        <thead class="table-light">
-                                                        <tr>
-                                                            <th scope="col">File Name</th>
-                                                            <th scope="col">Type</th>
-                                                            <th scope="col">Size</th>
-                                                            <th scope="col">Upload Date</th>
-                                                            <th scope="col" style="width: 120px;">Action</th>
-                                                        </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                        <tr>
-                                                            <td>
-                                                                <div class="d-flex align-items-center">
-                                                                    <div class="avatar-sm">
-                                                                        <div class="avatar-title bg-light text-secondary rounded fs-24">
-                                                                            <i class="ri-folder-zip-line"></i>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="ms-3 flex-grow-1">
-                                                                        <h5 class="fs-14 mb-0"><a href="javascript:void(0)" class="text-body">Artboard-documents.zip</a></h5>
-                                                                    </div>
-                                                                </div>
-                                                            </td>
-                                                            <td>Zip File</td>
-                                                            <td>4.57 MB</td>
-                                                            <td>12 Dec 2021</td>
-                                                            <td>
-                                                                <div class="dropdown">
-                                                                    <a href="javascript:void(0);" class="btn btn-soft-secondary btn-sm btn-icon" data-bs-toggle="dropdown" aria-expanded="true">
-                                                                        <i class="ri-more-fill"></i>
-                                                                    </a>
-                                                                    <ul class="dropdown-menu dropdown-menu-end">
-                                                                        <li><a class="dropdown-item" href="javascript:void(0);"><i class="ri-eye-fill me-2 align-bottom text-muted"></i>View</a></li>
-                                                                        <li><a class="dropdown-item" href="javascript:void(0);"><i class="ri-download-2-fill me-2 align-bottom text-muted"></i>Download</a></li>
-                                                                        <li class="dropdown-divider"></li>
-                                                                        <li><a class="dropdown-item" href="javascript:void(0);"><i class="ri-delete-bin-5-fill me-2 align-bottom text-muted"></i>Delete</a></li>
-                                                                    </ul>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <div class="d-flex align-items-center">
-                                                                    <div class="avatar-sm">
-                                                                        <div class="avatar-title bg-light text-danger rounded fs-24">
-                                                                            <i class="ri-file-pdf-fill"></i>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="ms-3 flex-grow-1">
-                                                                        <h5 class="fs-14 mb-0"><a href="javascript:void(0);" class="text-body">Bank Management System</a></h5>
-                                                                    </div>
-                                                                </div>
-                                                            </td>
-                                                            <td>PDF File</td>
-                                                            <td>8.89 MB</td>
-                                                            <td>24 Nov 2021</td>
-                                                            <td>
-                                                                <div class="dropdown">
-                                                                    <a href="javascript:void(0);" class="btn btn-soft-secondary btn-sm btn-icon" data-bs-toggle="dropdown" aria-expanded="true">
-                                                                        <i class="ri-more-fill"></i>
-                                                                    </a>
-                                                                    <ul class="dropdown-menu dropdown-menu-end">
-                                                                        <li><a class="dropdown-item" href="javascript:void(0);"><i class="ri-eye-fill me-2 align-bottom text-muted"></i>View</a></li>
-                                                                        <li><a class="dropdown-item" href="javascript:void(0);"><i class="ri-download-2-fill me-2 align-bottom text-muted"></i>Download</a></li>
-                                                                        <li class="dropdown-divider"></li>
-                                                                        <li><a class="dropdown-item" href="javascript:void(0);"><i class="ri-delete-bin-5-fill me-2 align-bottom text-muted"></i>Delete</a></li>
-                                                                    </ul>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <div class="d-flex align-items-center">
-                                                                    <div class="avatar-sm">
-                                                                        <div class="avatar-title bg-light text-secondary rounded fs-24">
-                                                                            <i class="ri-video-line"></i>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="ms-3 flex-grow-1">
-                                                                        <h5 class="fs-14 mb-0"><a href="javascript:void(0);" class="text-body">Tour-video.mp4</a></h5>
-                                                                    </div>
-                                                                </div>
-                                                            </td>
-                                                            <td>MP4 File</td>
-                                                            <td>14.62 MB</td>
-                                                            <td>19 Nov 2021</td>
-                                                            <td>
-                                                                <div class="dropdown">
-                                                                    <a href="javascript:void(0);" class="btn btn-soft-secondary btn-sm btn-icon" data-bs-toggle="dropdown" aria-expanded="true">
-                                                                        <i class="ri-more-fill"></i>
-                                                                    </a>
-                                                                    <ul class="dropdown-menu dropdown-menu-end">
-                                                                        <li><a class="dropdown-item" href="javascript:void(0);"><i class="ri-eye-fill me-2 align-bottom text-muted"></i>View</a></li>
-                                                                        <li><a class="dropdown-item" href="javascript:void(0);"><i class="ri-download-2-fill me-2 align-bottom text-muted"></i>Download</a></li>
-                                                                        <li class="dropdown-divider"></li>
-                                                                        <li><a class="dropdown-item" href="javascript:void(0);"><i class="ri-delete-bin-5-fill me-2 align-bottom text-muted"></i>Delete</a></li>
-                                                                    </ul>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <div class="d-flex align-items-center">
-                                                                    <div class="avatar-sm">
-                                                                        <div class="avatar-title bg-light text-success rounded fs-24">
-                                                                            <i class="ri-file-excel-fill"></i>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="ms-3 flex-grow-1">
-                                                                        <h5 class="fs-14 mb-0"><a href="javascript:void(0);" class="text-body">Account-statement.xsl</a></h5>
-                                                                    </div>
-                                                                </div>
-                                                            </td>
-                                                            <td>XSL File</td>
-                                                            <td>2.38 KB</td>
-                                                            <td>14 Nov 2021</td>
-                                                            <td>
-                                                                <div class="dropdown">
-                                                                    <a href="javascript:void(0);" class="btn btn-soft-secondary btn-sm btn-icon" data-bs-toggle="dropdown" aria-expanded="true">
-                                                                        <i class="ri-more-fill"></i>
-                                                                    </a>
-                                                                    <ul class="dropdown-menu dropdown-menu-end">
-                                                                        <li><a class="dropdown-item" href="javascript:void(0);"><i class="ri-eye-fill me-2 align-bottom text-muted"></i>View</a></li>
-                                                                        <li><a class="dropdown-item" href="javascript:void(0);"><i class="ri-download-2-fill me-2 align-bottom text-muted"></i>Download</a></li>
-                                                                        <li class="dropdown-divider"></li>
-                                                                        <li><a class="dropdown-item" href="javascript:void(0);"><i class="ri-delete-bin-5-fill me-2 align-bottom text-muted"></i>Delete</a></li>
-                                                                    </ul>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <div class="d-flex align-items-center">
-                                                                    <div class="avatar-sm">
-                                                                        <div class="avatar-title bg-light text-warning rounded fs-24">
-                                                                            <i class="ri-folder-fill"></i>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="ms-3 flex-grow-1">
-                                                                        <h5 class="fs-14 mb-0"><a href="javascript:void(0);" class="text-body">Project Screenshots Collection</a></h5>
-                                                                    </div>
-                                                                </div>
-                                                            </td>
-                                                            <td>Folder File</td>
-                                                            <td>87.24 MB</td>
-                                                            <td>08 Nov 2021</td>
-                                                            <td>
-                                                                <div class="dropdown">
-                                                                    <a href="javascript:void(0);" class="btn btn-soft-secondary btn-sm btn-icon" data-bs-toggle="dropdown" aria-expanded="true">
-                                                                        <i class="ri-more-fill"></i>
-                                                                    </a>
-                                                                    <ul class="dropdown-menu dropdown-menu-end">
-                                                                        <li><a class="dropdown-item" href="javascript:void(0);"><i class="ri-eye-fill me-2 align-bottom text-muted"></i>View</a></li>
-                                                                        <li><a class="dropdown-item" href="javascript:void(0);"><i class="ri-download-2-fill me-2 align-bottom text-muted"></i>Download</a></li>
-                                                                        <li class="dropdown-divider"></li>
-                                                                        <li><a class="dropdown-item" href="javascript:void(0);"><i class="ri-delete-bin-5-fill me-2 align-bottom text-muted"></i>Delete</a></li>
-                                                                    </ul>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <div class="d-flex align-items-center">
-                                                                    <div class="avatar-sm">
-                                                                        <div class="avatar-title bg-light text-danger rounded fs-24">
-                                                                            <i class="ri-image-2-fill"></i>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="ms-3 flex-grow-1">
-                                                                        <h5 class="fs-14 mb-0"><a href="javascript:void(0);" class="text-body">Velzon-logo.png</a></h5>
-                                                                    </div>
-                                                                </div>
-                                                            </td>
-                                                            <td>PNG File</td>
-                                                            <td>879 KB</td>
-                                                            <td>02 Nov 2021</td>
-                                                            <td>
-                                                                <div class="dropdown">
-                                                                    <a href="javascript:void(0);" class="btn btn-soft-secondary btn-sm btn-icon" data-bs-toggle="dropdown" aria-expanded="true">
-                                                                        <i class="ri-more-fill"></i>
-                                                                    </a>
-                                                                    <ul class="dropdown-menu dropdown-menu-end">
-                                                                        <li><a class="dropdown-item" href="javascript:void(0);"><i class="ri-eye-fill me-2 align-bottom text-muted"></i>View</a></li>
-                                                                        <li><a class="dropdown-item" href="javascript:void(0);"><i class="ri-download-2-fill me-2 align-bottom text-muted"></i>Download</a></li>
-                                                                        <li class="dropdown-divider"></li>
-                                                                        <li><a class="dropdown-item" href="javascript:void(0);"><i class="ri-delete-bin-5-fill me-2 align-bottom text-muted"></i>Delete</a></li>
-                                                                    </ul>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                                <div class="text-center mt-3">
-                                                    <a href="javascript:void(0);" class="text-success "><i class="mdi mdi-loading mdi-spin fs-20 align-middle me-2"></i> Load more </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="tab-pane fade" id="project-activities" role="tabpanel">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Activities</h5>
-                                        <div class="acitivity-timeline py-3">
-                                            <div class="acitivity-item d-flex">
-                                                <div class="flex-shrink-0">
-                                                    <img src="assets/images/users/avatar-1.jpg" alt="" class="avatar-xs rounded-circle acitivity-avatar" />
-                                                </div>
-                                                <div class="flex-grow-1 ms-3">
-                                                    <h6 class="mb-1">Oliver Phillips <span class="badge bg-primary-subtle text-primary align-middle">New</span></h6>
-                                                    <p class="text-muted mb-2">We talked about a project on linkedin.</p>
-                                                    <small class="mb-0 text-muted">Today</small>
-                                                </div>
-                                            </div>
-                                            <div class="acitivity-item py-3 d-flex">
-                                                <div class="flex-shrink-0 avatar-xs acitivity-avatar">
-                                                    <div class="avatar-title bg-success-subtle text-success rounded-circle">
-                                                        N
-                                                    </div>
-                                                </div>
-                                                <div class="flex-grow-1 ms-3">
-                                                    <h6 class="mb-1">Nancy Martino <span class="badge bg-secondary-subtle text-secondary align-middle">In Progress</span></h6>
-                                                    <p class="text-muted mb-2"><i class="ri-file-text-line align-middle ms-2"></i> Create new project Building product</p>
-                                                    <div class="avatar-group mb-2">
-                                                        <a href="javascript: void(0);" class="avatar-group-item" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Christi">
-                                                            <img src="assets/images/users/avatar-4.jpg" alt="" class="rounded-circle avatar-xs" />
-                                                        </a>
-                                                        <a href="javascript: void(0);" class="avatar-group-item" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Frank Hook">
-                                                            <img src="assets/images/users/avatar-3.jpg" alt="" class="rounded-circle avatar-xs" />
-                                                        </a>
-                                                        <a href="javascript: void(0);" class="avatar-group-item" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title=" Ruby">
-                                                            <div class="avatar-xs">
-                                                                <div class="avatar-title rounded-circle bg-light text-primary">
-                                                                    R
-                                                                </div>
-                                                            </div>
-                                                        </a>
-                                                        <a href="javascript: void(0);" class="avatar-group-item" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="more">
-                                                            <div class="avatar-xs">
-                                                                <div class="avatar-title rounded-circle">
-                                                                    2+
-                                                                </div>
-                                                            </div>
-                                                        </a>
-                                                    </div>
-                                                    <small class="mb-0 text-muted">Yesterday</small>
-                                                </div>
-                                            </div>
-                                            <div class="acitivity-item py-3 d-flex">
-                                                <div class="flex-shrink-0">
-                                                    <img src="assets/images/users/avatar-2.jpg" alt="" class="avatar-xs rounded-circle acitivity-avatar" />
-                                                </div>
-                                                <div class="flex-grow-1 ms-3">
-                                                    <h6 class="mb-1">Natasha Carey <span class="badge bg-success-subtle text-success align-middle">Completed</span></h6>
-                                                    <p class="text-muted mb-2">Adding a new event with attachments</p>
-                                                    <div class="row">
-                                                        <div class="col-xxl-4">
-                                                            <div class="row border border-dashed gx-2 p-2 mb-2">
-                                                                <div class="col-4">
-                                                                    <img src="assets/images/small/img-2.jpg" alt="" class="img-fluid rounded" />
-                                                                </div>
-                                                                <!--end col-->
-                                                                <div class="col-4">
-                                                                    <img src="assets/images/small/img-3.jpg" alt="" class="img-fluid rounded" />
-                                                                </div>
-                                                                <!--end col-->
-                                                                <div class="col-4">
-                                                                    <img src="assets/images/small/img-4.jpg" alt="" class="img-fluid rounded" />
-                                                                </div>
-                                                                <!--end col-->
-                                                            </div>
-                                                            <!--end row-->
-                                                        </div>
-                                                    </div>
-                                                    <small class="mb-0 text-muted">25 Nov</small>
-                                                </div>
-                                            </div>
-                                            <div class="acitivity-item py-3 d-flex">
-                                                <div class="flex-shrink-0">
-                                                    <img src="assets/images/users/avatar-6.jpg" alt="" class="avatar-xs rounded-circle acitivity-avatar" />
-                                                </div>
-                                                <div class="flex-grow-1 ms-3">
-                                                    <h6 class="mb-1">Bethany Johnson</h6>
-                                                    <p class="text-muted mb-2">added a new member to velzon dashboard</p>
-                                                    <small class="mb-0 text-muted">19 Nov</small>
-                                                </div>
-                                            </div>
-                                            <div class="acitivity-item py-3 d-flex">
-                                                <div class="flex-shrink-0">
-                                                    <div class="avatar-xs acitivity-avatar">
-                                                        <div class="avatar-title rounded-circle bg-danger-subtle text-danger">
-                                                            <i class="ri-shopping-bag-line"></i>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="flex-grow-1 ms-3">
-                                                    <h6 class="mb-1">Your order is placed <span class="badge bg-danger-subtle text-danger align-middle ms-1">Out of Delivery</span></h6>
-                                                    <p class="text-muted mb-2">These customers can rest assured their order has been placed.</p>
-                                                    <small class="mb-0 text-muted">16 Nov</small>
-                                                </div>
-                                            </div>
-                                            <div class="acitivity-item py-3 d-flex">
-                                                <div class="flex-shrink-0">
-                                                    <img src="assets/images/users/avatar-7.jpg" alt="" class="avatar-xs rounded-circle acitivity-avatar" />
-                                                </div>
-                                                <div class="flex-grow-1 ms-3">
-                                                    <h6 class="mb-1">Lewis Pratt</h6>
-                                                    <p class="text-muted mb-2">They all have something to say beyond the words on the page. They can come across as casual or neutral, exotic or graphic. </p>
-                                                    <small class="mb-0 text-muted">22 Oct</small>
-                                                </div>
-                                            </div>
-                                            <div class="acitivity-item py-3 d-flex">
-                                                <div class="flex-shrink-0">
-                                                    <div class="avatar-xs acitivity-avatar">
-                                                        <div class="avatar-title rounded-circle bg-info-subtle text-info">
-                                                            <i class="ri-line-chart-line"></i>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="flex-grow-1 ms-3">
-                                                    <h6 class="mb-1">Monthly sales report</h6>
-                                                    <p class="text-muted mb-2"><span class="text-danger">2 days left</span> notification to submit the monthly sales report. <a href="javascript:void(0);" class="link-warning text-decoration-underline">Reports Builder</a></p>
-                                                    <small class="mb-0 text-muted">15 Oct</small>
-                                                </div>
-                                            </div>
-                                            <div class="acitivity-item d-flex">
-                                                <div class="flex-shrink-0">
-                                                    <img src="assets/images/users/avatar-8.jpg" alt="" class="avatar-xs rounded-circle acitivity-avatar" />
-                                                </div>
-                                                <div class="flex-grow-1 ms-3">
-                                                    <h6 class="mb-1">New ticket received <span class="badge bg-success-subtle text-success align-middle">Completed</span></h6>
-                                                    <p class="text-muted mb-2">User <span class="text-secondary">Erica245</span> submitted a ticket.</p>
-                                                    <small class="mb-0 text-muted">26 Aug</small>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!--end card-body-->
-                                </div>
-                                <!--end card-->
                             </div>
                         </div>
                         <!-- end col -->
@@ -839,8 +485,8 @@
                         messages: {
                             title: {
                                 required: "Vui lòng nhập trường này !",
-                                minlength: "Tên bảng quá ngắn !",
-                                maxlength: "Tên bảng quá quá dài !",
+                                minlength: "Tên dự án quá ngắn !",
+                                maxlength: "Tên dự án quá quá dài !",
                             },
                             access_level_tables_id: "Vui lòng  chọn trường này !",
                             description: 'Mô tả không gian quá dài !'
