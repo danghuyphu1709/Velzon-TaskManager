@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignIdFor(App\Models\Task::class)->constrained()->onDelete('cascade');
             $table->string('content',1000);
             $table->tinyInteger('status')->default(1);
+            $table->timestamps();
         });
     }
 

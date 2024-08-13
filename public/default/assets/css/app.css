@@ -15499,10 +15499,11 @@ span.flatpickr-weekday {
   height: 135px;
   width: 100%;
   -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
   -o-object-position: center;
-     object-position: center;
+  object-position: center;
   margin: 12px 0px;
+
 }
 .tasks-box:last-child {
   margin-bottom: 0px;

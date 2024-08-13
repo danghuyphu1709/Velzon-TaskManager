@@ -10,12 +10,12 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                            <h4 class="mb-sm-0">Danh sách bảng</h4>
+                            <h4 class="mb-sm-0">Danh sách dự án</h4>
 
                             <div class="page-title-right">
                                 <ol class="breadcrumb m-0">
-                                    <li class="breadcrumb-item"><a href="javascript: void(0);">Projects</a></li>
-                                    <li class="breadcrumb-item active">Project List</li>
+                                    <li class="breadcrumb-item"><a href="javascript: void(0);">Trang chủ</a></li>
+                                    <li class="breadcrumb-item active">Danh sách dự án</li>
                                 </ol>
                             </div>
 
@@ -27,44 +27,42 @@
                 <div class="row g-4 mb-3">
                     <div class="col-sm-auto">
                         <div>
-                            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createTableModal"><i class="ri-add-line align-bottom me-1"></i> Tạo bảng</button>
+                            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createTableModal"><i class="ri-add-line align-bottom me-1"></i> Tạo dự án</button>
                         </div>
                     </div>
                     <div class="col-sm">
-                        <div class="d-flex justify-content-sm-end gap-2">
-                            <div class="search-box ms-2">
-                                <input type="text" class="form-control" placeholder="Search...">
-                                <i class="ri-search-line search-icon"></i>
-                            </div>
 
-                            <div class="select-box ms-2">
-                            <select class="form-control w-md" data-choices data-choices-search-false>
-                                <option value="All">All</option>
-                                <option value="Today">Today</option>
-                                <option value="Yesterday" selected>Yesterday</option>
-                                <option value="Last 7 Days">Last 7 Days</option>
-                                <option value="Last 30 Days">Last 30 Days</option>
-                                <option value="This Month">This Month</option>
-                                <option value="Last Year">Last Year</option>
-                            </select>
-                            </div>
-                        </div>
                     </div>
                 </div>
 
                 <div class="row">
                     @foreach($user->tables as $item)
+                        @php
+                            $taskComplete = 0;
+                            $totalTask = count($item->tasks); // Tính tổng số task ngay từ đầu
+                            $progressbar = 0;
+
+                            foreach ($item->tasks as $task) {
+                                if ($task->status == \App\Enums\StatusSystem::COMPLETE->value) {
+                                    $taskComplete++;
+                                }
+                            }
+
+                            if($totalTask > 0) {
+                                $progressbar = floor(($taskComplete / $totalTask) * 100);
+                            }
+                        @endphp
                     <div class="col-xxl-3 col-sm-6 project-card">
                         <div class="card card-height-100">
                             <div class="card-body">
                                 <div class="d-flex flex-column h-100">
                                     <div class="d-flex">
                                         <div class="flex-grow-1">
-                                            <p class="text-muted mb-4">Bảng làm việc</p>
+                                            <p class="text-muted mb-4">Nội dung dự án</p>
                                         </div>
                                         <div class="flex-shrink-0">
                                             <div class="d-flex gap-1 align-items-center">
-                                                <button type="button" class="btn avatar-xs mt-n1 p-0 favourite-btn">
+                                                <button type="button" class="important btn avatar-xs mt-n1 p-0 favourite-btn {{ $item->important ? 'active' : ''}}" data-id="{{ $item->id }}" data-url="{{ route('tables.important') }}">
                                                         <span class="avatar-title bg-transparent fs-15">
                                                             <i class="ri-star-fill"></i>
                                                         </span>
@@ -94,11 +92,11 @@
                                                 <div>Nhiệm vụ </div>
                                             </div>
                                             <div class="flex-shrink-0">
-                                                <div><i class="ri-list-check align-bottom me-1 text-muted"></i> 20/34</div>
+                                                <div><i class="ri-list-check align-bottom me-1 text-muted"></i> {{ $taskComplete }}/{{ $totalTask }}</div>
                                             </div>
                                         </div>
                                         <div class="progress progress-sm animated-progress">
-                                            <div class="progress-bar bg-success" role="progressbar" aria-valuenow="78" aria-valuemin="0" aria-valuemax="100" style="width: 78%;"></div><!-- /.progress-bar -->
+                                            <div class="progress-bar bg-success" role="progressbar" aria-valuenow="78" aria-valuemin="0" aria-valuemax="{{ $totalTask }}" style="width: {{ $progressbar }}%;"></div><!-- /.progress-bar -->
                                         </div><!-- /.progress -->
                                     </div>
                                 </div>
@@ -120,7 +118,7 @@
                                     </div>
                                     <div class="flex-shrink-0">
                                         <div class="text-muted">
-                                            <i class="ri-calendar-event-fill me-1 align-bottom"></i> {{ \Illuminate\Support\Carbon::parse($item->created_at)->format('d M, Y') }}
+                                            <i class="ri-calendar-event-fill me-1 align-bottom"></i> {{ \Carbon\Carbon::parse($item->created_at)->translatedFormat('d F Y') }}
                                         </div>
                                     </div>
 

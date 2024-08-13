@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Client;
 
+use App\Enums\StatusSystem;
 use App\Enums\TypeUnitEnum;
 use App\Enums\UserHasRole;
 use App\Http\Controllers\Controller;
@@ -12,10 +13,8 @@ use App\Models\AccessLevelTables;
 use App\Models\Tables;
 use App\Models\TableUser;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 use Mockery\Exception;
 
 class TableController extends Controller
@@ -33,15 +32,17 @@ class TableController extends Controller
      */
     public function index(string $code)
     {
-        $table = Tables::query()->with(['users','AccessLevelTables','ListTask','ListTask.Task'])->where('code',$code)->first();
-
+        $table = Tables::query()->with(['users','AccessLevelTables','ListTask','ListTask.Task','ListTask.Task.User','ListTask.Task.StepTask'])->where('code',$code)->first();
         if(!empty($table)){
             $auth = $table->users->where('id',Auth::user()->id)->first();
             if(!$auth && $table->access_level_tables_id == TypeUnitEnum::private->value){
                 return redirect()->route('system.private');
+            }elseif (!$auth && $table->access_level_tables_id == TypeUnitEnum::public->value){
+                return redirect()->route('tables.show',$table->code);
             }
             return view('client.table.index',compact(['table','auth']));
         }
+
         return redirect()->back();
     }
 
@@ -74,8 +75,10 @@ class TableController extends Controller
     {
         $table = Tables::query()->with(['users','AccessLevelTables'])->where('code',$code)->first();
 
+
         if(!empty($table)){
             $auth = $table->users->where('id',Auth::user()->id)->first();
+
             $accessLevel = AccessLevelTables::query()->get();
             if(!$auth && $table->access_level_tables_id == TypeUnitEnum::private->value){
                 return redirect()->route('system.private');
@@ -153,6 +156,37 @@ class TableController extends Controller
             ]);
             return redirect()->route('tables.show', $tables->code);
         }catch(\PHPUnit\Event\Exception $exception){
+            session()->flash('error', 'Lỗi hệ thống, vui lòng gửi lại sau');
+            return redirect()->back();
+        }
+    }
+
+    public function addRoleUser(Tables $tables,User $user)
+    {
+        $spaces_user = TableUser::query()->where('tables_id', $tables->id)
+            ->where('user_id', $user->id);
+
+        if ($spaces_user->first() != null) {
+            $spaces_user->update([
+                'roles_id' => UserHasRole::admin->value
+            ]);
+            return redirect()->route('tables.show',$tables->code);
+        } else {
+            session()->flash('error', 'Lỗi hệ thống, vui lòng gửi lại sau');
+            return redirect()->back();
+        }
+    }
+
+    public function deleteRoleUser(Tables $tables,User $user)
+    {
+        $spaces_user = TableUser::query()->where('tables_id', $tables->id)
+            ->where('user_id', $user->id);
+        if ($spaces_user->first() != null) {
+            $spaces_user->update([
+                'roles_id' => UserHasRole::member->value
+            ]);
+            return redirect()->route('tables.show',$tables->code);
+        } else {
             session()->flash('error', 'Lỗi hệ thống, vui lòng gửi lại sau');
             return redirect()->back();
         }

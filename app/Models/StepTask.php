@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class StepTask extends Model
 {
@@ -13,7 +14,11 @@ class StepTask extends Model
 
     public $timestamps = true;
 
-    public $fillable = ['tables_id','title','status','created_at','updated_at'];
+    public $fillable = ['task_id','content','status','created_at','updated_at'];
 
 
+    public function task() :BelongsTo
+    {
+      return  $this->belongsTo(Task::class);
+    }
 }

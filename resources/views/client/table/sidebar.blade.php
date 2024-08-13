@@ -3,7 +3,7 @@
         <!-- LOGO -->
         <div class="navbar-brand-box">
             <!-- Light Logo-->
-            <a href="#" class="logo logo-light">
+            <a href="{{ route('home') }}" class="logo logo-light">
                     <span class="logo-sm">
                         <img src="{{ asset('default/assets/images/logo-sm.png') }}" alt="" height="28">
                     </span>
@@ -21,16 +21,16 @@
                 <div id="two-column-menu">
                 </div>
                 <ul class="navbar-nav" id="navbar-nav">
-                    <li class="menu-title"><span data-key="t-menu">Bảng</span></li>
+                    <li class="menu-title"><span data-key="t-menu">Dự án</span></li>
                     <li class="nav-item">
                         <a class="nav-link menu-link" href="">
-                            <i class="ri-table-2"></i> <span data-key="t-widgets" class="text-truncate-two-lines" style="font-size: 18px">{{ $table->title }}</span>
+                            <i class="ri-projector-line"></i> <span data-key="t-widgets" class="text-truncate-two-lines" style="font-size: 18px">{{ $table->title }}</span>
                         </a>
                     </li>
                     <div class="collapse menu-dropdown show" id="sidebar">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="{{ route('tables.index',$table->code ) }}" class="nav-link" data-key="t-analytics">Bảng</a>
+                                <a href="{{ route('tables.index',$table->code ) }}" class="nav-link" data-key="t-analytics">Dự án</a>
                             </li>
                             <li class="nav-item">
                                 <a href="{{ route('tables.show',$table->code ) }}" class="nav-link" data-key="t-ecommerce"> Cài đặt </a>
@@ -44,13 +44,13 @@
                     @foreach($table->ListTask as $item)
                         <li class="nav-item">
                             <a class="nav-link menu-link" href="#table{{$item->id}}" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
-                                <i class="ri-table-2"></i><span class="text-truncate-two-lines" data-key="t-dashboards"> {{ $item->title }} </span>
+                                <i class="ri-survey-line"></i><span class="text-truncate-two-lines" data-key="t-dashboards"> {{ $item->title }} </span>
                             </a>
                             <div class="collapse menu-dropdown" id="table{{$item->id}}">
                                 <ul class="nav nav-sm flex-column">
                                     @foreach($item->task as $task)
                                     <li class="nav-item">
-                                        <a href="{{ route('tables.index',$item->code ) }}" class="nav-link" data-key="t-analytics"> Bảng </a>
+                                        <a href="{{ route('task.index',$task->code) }}" class="nav-link" data-key="t-analytics"> {{ $task->task_name }} </a>
                                     </li>
                                     @endforeach
                                     <li class="nav-item">
