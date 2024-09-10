@@ -27,7 +27,7 @@
                                                               method="post" id="form-edit-space">
                                                             <div class="d-flex" style=" gap: 9px"><h4
                                                                     class="fw-bold mt-3">{{ $table->title }}</h4>
-                                                                    @if(isset($auth) && $auth->pivot->roles_id == \App\Enums\UserHasRole::admin->value)
+                                                                    @if(isset($auth) && $auth->pivot->role_tables_id == \App\Enums\UserHasRole::admin->value)
                                                                         <button data-bs-toggle="modal"
                                                                                 data-bs-target="#updateBoardModal"
                                                                                 class="btn" type="button"
@@ -76,7 +76,7 @@
                                             </a>
                                         </li>
                                         <li class="nav-item">
-                                                @if(isset($auth) && $auth->pivot->roles_id == \App\Enums\UserHasRole::admin->value)
+                                                @if(isset($auth) && $auth->pivot->role_tables_id == \App\Enums\UserHasRole::admin->value)
                                                     <a class="nav-link fw-semibold" data-bs-toggle="tab"
                                                        href="#project-team" role="tab">
                                                         Quản lý thành viên
@@ -133,7 +133,7 @@
                                                                 </div>
                                                                 <div class="flex-shrink-0">
                                                                     <div class="d-flex align-items-center gap-1">
-                                                                        @if($item->pivot->roles_id == 1)
+                                                                        @if($item->pivot->role_tables_id == 1)
                                                                             <button type="button"
                                                                                     class="btn btn-light btn-sm">Quản
                                                                                 trị viên
@@ -212,7 +212,7 @@
                                                                         <i class="ri-more-fill fs-17"></i>
                                                                     </a>
                                                                     <ul class="dropdown-menu dropdown-menu-end">
-                                                                        @if($item->pivot->roles_id == 1)
+                                                                        @if($item->pivot->role_tables_id  == 1)
                                                                             <li>
                                                                                 <form
                                                                                     action="{{ route('tables.delete_admin',['tables' => $table, 'user' => $item]) }}"
@@ -280,7 +280,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    @if($item->pivot->roles_id == 1)
+                                                    @if($item->pivot->role_tables_id  == 1)
                                                         <button type="button" class="btn btn-light btn-sm mt-3">Quản
                                                             trị viên
                                                         </button>

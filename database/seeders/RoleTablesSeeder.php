@@ -13,7 +13,7 @@ class RoleTablesSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('roles')->insert([
+        DB::table('role_tables')->insert([
             ['id' => 1,'role_name' => 'Quản trị viên'],
             ['id' => 2,'role_name' => 'Thành viên'],
         ]);

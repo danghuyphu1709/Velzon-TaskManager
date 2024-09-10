@@ -35,11 +35,6 @@ class TableController extends Controller
         $table = Tables::query()->with(['users','AccessLevelTables','ListTask','ListTask.Task','ListTask.Task.User','ListTask.Task.StepTask'])->where('code',$code)->first();
         if(!empty($table)){
             $auth = $table->users->where('id',Auth::user()->id)->first();
-            if(!$auth && $table->access_level_tables_id == TypeUnitEnum::private->value){
-                return redirect()->route('system.private');
-            }elseif (!$auth && $table->access_level_tables_id == TypeUnitEnum::public->value){
-                return redirect()->route('tables.show',$table->code);
-            }
             return view('client.table.index',compact(['table','auth']));
         }
 
@@ -56,7 +51,7 @@ class TableController extends Controller
             $this->tableUserRepository->create([
                 'tables_id' => $tableCreated->id,
                 'user_id' => Auth::user()->id,
-                'roles_id' => UserHasRole::admin->value,
+                'role_tables_id' => UserHasRole::admin->value,
                 'is_created' => UserHasRole::admin->value
             ]);
             DB::commit();
@@ -75,14 +70,10 @@ class TableController extends Controller
     {
         $table = Tables::query()->with(['users','AccessLevelTables'])->where('code',$code)->first();
 
-
+        dd($table);
         if(!empty($table)){
             $auth = $table->users->where('id',Auth::user()->id)->first();
-
             $accessLevel = AccessLevelTables::query()->get();
-            if(!$auth && $table->access_level_tables_id == TypeUnitEnum::private->value){
-                return redirect()->route('system.private');
-            }
             return view('client.table.show',compact(['table','auth','accessLevel']));
         }
         return redirect()->back();
@@ -152,7 +143,7 @@ class TableController extends Controller
             $this->tableUserRepository->create([
                 'tables_id' => $tables->id,
                 'user_id' => Auth::user()->id,
-                'roles_id' => UserHasRole::member->value,
+                'role_tables_id' => UserHasRole::member->value,
             ]);
             return redirect()->route('tables.show', $tables->code);
         }catch(\PHPUnit\Event\Exception $exception){
@@ -168,7 +159,7 @@ class TableController extends Controller
 
         if ($spaces_user->first() != null) {
             $spaces_user->update([
-                'roles_id' => UserHasRole::admin->value
+                'role_tables_id' => UserHasRole::admin->value
             ]);
             return redirect()->route('tables.show',$tables->code);
         } else {
@@ -183,7 +174,7 @@ class TableController extends Controller
             ->where('user_id', $user->id);
         if ($spaces_user->first() != null) {
             $spaces_user->update([
-                'roles_id' => UserHasRole::member->value
+                'role_tables_id' => UserHasRole::member->value
             ]);
             return redirect()->route('tables.show',$tables->code);
         } else {

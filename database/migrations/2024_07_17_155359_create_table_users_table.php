@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('table_users', function (Blueprint $table) {
             $table->foreignIdFor(App\Models\Tables::class)->constrained()->onDelete('cascade');
             $table->foreignIdFor(App\Models\User::class)->constrained();
-            $table->foreignIdFor(App\Models\Roles::class)->constrained();
+            $table->foreignIdFor(App\Models\RoleTables::class)->constrained();
             $table->boolean('is_created')->default(0);
             $table->primary(['tables_id','user_id']);
         });

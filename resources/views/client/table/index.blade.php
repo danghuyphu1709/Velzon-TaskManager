@@ -45,7 +45,7 @@
                                     <img src="{{ $item->avatar }}" alt="" class="rounded-circle avatar-xs">
                                 </a>
                                 @endforeach
-                                @if(isset($auth) && $auth->pivot->roles_id == \App\Enums\UserHasRole::admin->value)
+                                @if(isset($auth) && $auth->pivot->role_tables_id  == \App\Enums\UserHasRole::admin->value)
                                     <a href="#addMemberModal" data-bs-toggle="modal" class="avatar-group-item">
                                         <div class="avatar-xs">
                                             <div class="avatar-title rounded-circle">
