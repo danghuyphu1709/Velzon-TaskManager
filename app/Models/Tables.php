@@ -25,7 +25,7 @@ class Tables extends Model
     public function users() :BelongsToMany
     {
         return $this->belongsToMany(User::class,'table_users', 'tables_id', 'user_id')
-            ->withPivot('roles_id', 'is_created');
+            ->withPivot('role_tables_id', 'is_created');
     }
 
     public function AccessLevelTables() : BelongsTo

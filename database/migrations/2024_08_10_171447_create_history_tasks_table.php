@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('history_tasks', function (Blueprint $table) {
             $table->id();
             $table->string('type');
-            $table->foreignIdFor(App\Models\Task::class)->constrained();
+            $table->foreignIdFor(App\Models\Task::class)->constrained()->onDelete('cascade');
             $table->text('data');
             $table->timestamps();
         });

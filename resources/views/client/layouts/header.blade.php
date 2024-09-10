@@ -29,7 +29,7 @@
                     <div class="dropdown topbar-head-dropdown ms-1 header-item" id="notificationDropdown">
                         <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle" id="page-header-notifications-dropdown" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-haspopup="true" aria-expanded="false">
                             <i class='bx bx-bell fs-22'></i>
-                            <span class="position-absolute topbar-badge fs-10 translate-middle badge rounded-pill bg-danger">3<span class="visually-hidden">unread messages</span></span>
+                            <span class="position-absolute topbar-badge fs-10 translate-middle badge rounded-pill bg-danger">{{ count(Auth::user()->notifications) }}<span class="visually-hidden">unread messages</span></span>
                         </button>
                         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0" aria-labelledby="page-header-notifications-dropdown">
                             <div class="dropdown-head bg-primary bg-pattern rounded-top">
@@ -46,7 +46,7 @@
                                 <div class="px-2 pt-2">
                                     <ul class="nav nav-tabs dropdown-tabs nav-tabs-custom" data-dropdown-tabs="true" id="notificationItemsTab" role="tablist">
                                         <li class="nav-item waves-effect waves-light">
-                                            <button class="nav-link active" data-bs-toggle="tab" href="#all-noti-tab" role="tab" aria-selected="true">
+                                            <button type="button" class="nav-link active" data-bs-toggle="tab" href="#all-noti-tab" role="tab" aria-selected="true">
                                                 Tất cả ({{ count(Auth::user()->notifications) }})
                                             </button>
                                         </li>
@@ -54,13 +54,14 @@
                                 </div>
                             </div>
 
-                            <form action="/chedkcs" method="post">
+                            <form action="{{ route('notification.delete') }}" method="post">
+                                @csrf
+                                @method('POST')
                             <div class="tab-content position-relative" id="notificationItemsTabContent">
                                 <div class="tab-pane fade show active py-2 ps-2" id="all-noti-tab" role="tabpanel">
                                     <div data-simplebar style="max-height: 300px;" class="pe-2">
                                         @foreach(Auth::user()->notifications as $notification)
-                                            @if(!$notification->read_at)
-                                                <a href="{{ route('tables.index',$notification->data['code']) }}?query={{ $notification->id }}">
+                                            @if($notification->read_at)
                                                      <div class="text-reset notification-item d-block dropdown-item bg-light">
                                                     <div class="d-flex">
                                                         <div class="avatar-xs me-3 flex-shrink-0">
@@ -79,18 +80,10 @@
                                                                 <span><i class="mdi mdi-clock-outline"></i>{{ mb_convert_case($notification->created_at->diffForHumans(), MB_CASE_TITLE, "UTF-8") }}</span>
                                                             </p>
                                                         </div>
-                                                        <div class="px-2 fs-15">
-                                                            <div class="form-check notification-check">
-                                                                <input class="form-check-input" type="checkbox" name="notifications[]" value="{{ $notification->id }}" id="messages-notification-check02">
-                                                                <label class="form-check-label" for="messages-notification-check02"></label>
-                                                            </div>
-                                                        </div>
                                                     </div>
                                                 </div>
-                                                </a>
                                             @else
-                                                <a href="{{ route('tables.index',$notification->data['code']) }}?query={{ $notification->id }}">
-                                                <div class="text-reset notification-item d-block dropdown-item ">
+                                                    <div class="text-reset notification-item d-block dropdown-item ">
                                                     <div class="d-flex">
                                                         <div class="avatar-xs me-3 flex-shrink-0">
                                                            <span class="avatar-title bg-danger-subtle text-danger rounded-circle fs-16">
@@ -108,21 +101,12 @@
                                                                 <span><i class="mdi mdi-clock-outline"></i>{{ mb_convert_case($notification->created_at->diffForHumans(), MB_CASE_TITLE, "UTF-8") }}</span>
                                                             </p>
                                                         </div>
-                                                        <div class="px-2 fs-15">
-                                                            <div class="form-check notification-check">
-                                                                <input class="form-check-input" type="checkbox" name="notifications[]" value="{{ $notification->id }}" id="messages-notification-check02">
-                                                                <label class="form-check-label" for="messages-notification-check02"></label>
-                                                            </div>
-                                                        </div>
                                                     </div>
                                                 </div>
-                                                </a>
                                             @endif
                                         @endforeach
                                     </div>
-
                                 </div>
-
                                 <div class="notification-actions" id="notification-actions">
                                     <div class="d-flex text-muted justify-content-center">
                                       Thông báo <div id="select-content" class="text-body fw-semibold px-1">0</div>  đã chọn <button type="submit" class="btn btn-link link-danger p-0 ms-3">Xóa</button>

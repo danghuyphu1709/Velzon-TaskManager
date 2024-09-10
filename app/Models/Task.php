@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 
 class Task extends Model
 {
@@ -41,5 +42,18 @@ class Task extends Model
     public function historyTask() : HasMany
     {
         return $this->hasMany(HistoryTask::class);
+    }
+
+    public function table() :HasOneThrough
+    {
+        return $this->hasOneThrough(
+            Tables::class,
+            ListTask::class,
+            'tables_id',
+            'id',
+            'list_task_id',
+            'id',
+
+        );
     }
 }

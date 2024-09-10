@@ -3,7 +3,7 @@
         <!-- LOGO -->
         <div class="navbar-brand-box">
             <!-- Light Logo-->
-            <a href="{{ route('home') }}" class="logo logo-light">
+            <a href="{{ route('admin.index') }}" class="logo logo-light">
                     <span class="logo-sm">
                         <img src="{{ asset('default/assets/images/logo-sm.png') }}" alt="" height="28">
                     </span>
@@ -25,6 +25,11 @@
                     <li class="nav-item">
                         <a class="nav-link menu-link" href=" {{ route('admin.index') }} ">
                             <i class="ri-bar-chart-2-line"></i> <span data-key="t-widgets" class="text-truncate-two-lines" style="font-size: 18px">Thống kê</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link menu-link" href=" {{ route('admin.user') }} ">
+                            <i class="ri-user-3-line"></i> <span data-key="t-widgets" class="text-truncate-two-lines" style="font-size: 18px">Nguời dùng </span>
                         </a>
                     </li>
                     <div class="collapse menu-dropdown show" id="sidebar">

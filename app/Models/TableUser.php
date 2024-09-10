@@ -12,6 +12,6 @@ class TableUser extends Model
 
     public $timestamps = false;
 
-    public $fillable = ['tables_id','user_id','roles_id','is_created'];
+    public $fillable = ['tables_id','user_id','role_tables_id','is_created'];
 
 }

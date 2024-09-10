@@ -68,7 +68,7 @@ class SendMailConfirmSpace
                 TableUser::create([
                     'tables_id' => $tables->id,
                     'user_id' => $user->id,
-                    'roles_id' => UserHasRole::member->value
+                    'role_tables_id' => UserHasRole::member->value
                 ]);
                 $member->delete();
                 DB::commit();

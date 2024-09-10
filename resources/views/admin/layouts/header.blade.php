@@ -146,7 +146,7 @@
                             <h6 class="dropdown-header">{{ Auth::user()->name  }}</h6>
                             <div class="dropdown-divider">
                             </div>
-                            <a class="dropdown-item" href="{{ route('admin.index') }}"><i class="mdi mdi-lifebuoy text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Trang quản lý</span></a>
+                            <a class="dropdown-item" href="{{ route('home') }}"><i class="mdi mdi-lifebuoy text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Trang người dùng</span></a>
                             <form method="POST" action="{{ route('logout') }}" class="dropdown-item">
                                 @csrf
                                 <button type="submit" class="btn"><i class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i>Đăng xuất</button>
